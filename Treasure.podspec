@@ -10,7 +10,7 @@ Treasure is a small set of tools on top of Lyft's Mapper library to convert obje
   s.homepage         = 'https://github.com/fishermenlabs/Treasure'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'kfweber' => 'kevinw@fishermenlabs.com' }
-  s.source           = { :git => 'https://github.com/fishermenlabs>/Treasure.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/fishermenlabs/Treasure.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '8.0'
   s.osx.deployment_target     = "10.10"
