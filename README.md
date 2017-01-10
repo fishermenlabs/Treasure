@@ -18,10 +18,15 @@ pod "Treasure"
 
 Treasure hinges on [Mapper](https://github.com/lyft/mapper). If you're not familiar with it, then go read up on it first.
 
-Objects must conform to either the `Resource` protocol, which conforms to Mapper's `Mappable` protocol.
+Objects must conform to the `Resource` protocol, which conforms to Mapper's `Mappable` protocol.
+
 `Key` provides convenient constants and functions to construct String keys for Mapper.
+
 Relationships are represented by either a `ToOneRelationship` or a `ToManyRelationship`.
-Relationships can be used to map included resources, which are placed into a shared data pool as received by Treasure.  Included resources are not cached, so the data pool will only exist for the current lifecycle.
+
+Relationships can be used to map included resources, which are placed into a shared data pool as received by Treasure. 
+
+Included resources are not cached, so the data pool will only exist for the current lifecycle.
 
 
 ```swift
