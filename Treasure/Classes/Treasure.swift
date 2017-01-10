@@ -11,31 +11,37 @@ import Mapper
 
 public struct Treasure {
     
-    //Keep an update pool of included resources
+    /// The shared data pool of included resources for the current lifecycle
     private static var includedDataPool = [String: Any]()
     
     public static var dataPool: NSDictionary {
         return Treasure.includedDataPool as NSDictionary
     }
     
+    /// The full json object received on instantiation
     private let json: NSDictionary
     
+    /// Returns the objects under the 'meta' key according to the JSON API specification
     public var meta: NSDictionary? {
         return json[Key.meta] as? NSDictionary
     }
     
+    /// Returns the objects under the 'errors' key according to the JSON API specification
     public var errors: NSDictionary? {
         return json[Key.errors] as? NSDictionary
     }
     
+    /// Returns the objects under the 'jsonapi' key according to the JSON API specification
     public var jsonapi: NSDictionary? {
         return json[Key.jsonapi] as? NSDictionary
     }
     
+    /// Returns the links objects under the 'links' key according to the JSON API specification
     public var links: NSDictionary? {
         return json[Key.links] as? NSDictionary
     }
     
+    /// Returns the links objects within the included object under the 'links' key according to the JSON API specification
     public var includedLinks: NSDictionary? {
         if let included = json[Key.included] as? NSDictionary {
             return included[Key.links] as? NSDictionary
@@ -72,6 +78,7 @@ public struct Treasure {
         Treasure.includedDataPool.removeAll()
     }
     
+    /// Adds the resources in data to the includedDataPool if needed
     private func pool(_ data: [[String: Any]]) {
         for data in data {
             if let type = data[Key.type] as? String {
@@ -91,46 +98,6 @@ public struct Treasure {
                 }
             }
         }
-    }
-}
-
-public extension Mapper {
-    
-    public func fromRelationship<T: Resource>(_ relationship: ToOneRelationship?) throws -> T {
-        guard relationship?.data != nil else { throw MapperError.customError(field: Key.data, message: "Relationship data is nil") }
-        
-        return try includedDataFor(relationshipData: relationship!.data!)
-    }
-    
-    public func fromRelationship<T: Resource>(_ relationship: ToManyRelationship?) throws -> [T] {
-        guard relationship?.data != nil else { throw MapperError.customError(field: Key.data, message: "Relationship data is nil") }
-        
-        return try relationship!.data!.map({ (data) -> T in
-            try includedDataFor(relationshipData: data)
-        })
-    }
-    
-    private func includedDataFor<T: Mappable>(relationshipData: RelationshipData) throws -> T {
-        
-        let error = MapperError.customError(field: Key.included, message: "Included data does not exist in pool")
-        
-        if let typePool = Treasure.dataPool[relationshipData.type] as? [NSDictionary] {
-            let data = typePool.filter({ (json) -> Bool in
-                if let jsonId = json[Key.id] as? String, jsonId == relationshipData.id {
-                    return true
-                }
-                
-                return false
-            })
-            
-            guard data.first != nil else {
-                throw error
-            }
-            
-            return try Mapper(JSON: data.first!).from("")
-        }
-        
-        throw error
     }
 }
 
@@ -158,53 +125,5 @@ public struct Key {
     
     public static func relationships(_ key: String) -> String {
         return "relationships.\(key)"
-    }
-}
-
-public func ==(lhs: Resource, rhs: Resource) -> Bool {
-    return lhs.type == rhs.type && lhs.id == rhs.id
-}
-
-public protocol Resource: Mappable {
-    
-    var id: String {get}
-    var type: String {get}
-}
-
-private protocol Relationship: Mappable {
-    
-    var links: NSDictionary? {get}
-}
-
-public struct RelationshipData: Resource {
-    
-    public let type: String
-    public let id: String
-    
-    public init(map: Mapper) throws {
-        type = try map.from(Key.type)
-        id = try map.from(Key.id)
-    }
-}
-
-public struct ToOneRelationship: Relationship {
-    
-    public let data: RelationshipData?
-    public var links: NSDictionary?
-    
-    public init(map: Mapper) throws {
-        data = try? map.from(Key.data)
-        links = try? map.from(Key.links)
-    }
-}
-
-public struct ToManyRelationship: Relationship {
-    
-    let data: [RelationshipData]?
-    public var links: NSDictionary?
-    
-    public init(map: Mapper) throws {
-        data = try? map.from(Key.data)
-        links = try? map.from(Key.links)
     }
 }
