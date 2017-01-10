@@ -1,6 +1,8 @@
 # Treasure
 
-Treasure is a small set of tools on top of Lyft's [Mapper](https://github.com/lyft/mapper) library to convert objects according to the [JSON API](http://jsonapi.org) specification.  It currently does not strictly adhere to the JSON API specification, but we want it to eventually. If you're not using the JSON API specification, then only using Mapper should be sufficient.
+Treasure is a small set of tools on top of Lyft's [Mapper](https://github.com/lyft/mapper) library to convert objects according to the [JSON API](http://jsonapi.org) specification. If you're not using the JSON API specification, then only using Mapper should be sufficient.
+
+The initial version of Treasure was built for the bare-minimum task of mapping relationships to included resources.  More strict conformance to the JSON API specification is on the TODO list.
 
 ## Installation
 
