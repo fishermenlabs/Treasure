@@ -12,12 +12,6 @@ use_frameworks!
 pod "Treasure"
 ```
 
-#### With [Carthage](https://github.com/Carthage/Carthage)
-
-```
-github "fishermenlabs/treasure"
-```
-
 ## Usage
 
 Treasure hinges on [Mapper](https://github.com/lyft/mapper). If you're not familiar with it, then go read up on it first.
@@ -29,6 +23,9 @@ Relationships can be used to map included resources, which are placed into a sha
 
 
 ```swift
+import Treasure
+import Mapper
+
 struct Project: Resource {
     
     let id: String

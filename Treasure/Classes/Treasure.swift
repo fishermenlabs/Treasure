@@ -94,7 +94,7 @@ public struct Treasure {
     }
 }
 
-extension Mapper {
+public extension Mapper {
     
     public func fromRelationship<T: Resource>(_ relationship: ToOneRelationship?) throws -> T {
         guard relationship?.data != nil else { throw MapperError.customError(field: Key.data, message: "Relationship data is nil") }
@@ -134,7 +134,7 @@ extension Mapper {
     }
 }
 
-struct Key {
+public struct Key {
     
     public static let id = "id"
     public static let type = "type"
@@ -161,7 +161,7 @@ struct Key {
     }
 }
 
-func ==(lhs: Resource, rhs: Resource) -> Bool {
+public func ==(lhs: Resource, rhs: Resource) -> Bool {
     return lhs.type == rhs.type && lhs.id == rhs.id
 }
 
