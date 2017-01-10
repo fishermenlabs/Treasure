@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09BEE2951E257175008B0858 /* Mapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09BEE2941E257175008B0858 /* Mapper.framework */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		7DBC6BDDE10BD0CF481C7EA9 /* Pods_Treasure_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A55D4D0188E25A98E23B096 /* Pods_Treasure_Tests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		09BEE2941E257175008B0858 /* Mapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mapper.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Treasure-hfekynneryjugadzgnipzlzyrbev/Build/Products/Debug-iphonesimulator/ModelMapper/Mapper.framework"; sourceTree = "<group>"; };
 		4BD98FB7C8027534FED00775 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* Treasure_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Treasure_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -28,6 +30,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09BEE2951E257175008B0858 /* Mapper.framework in Frameworks */,
 				7DBC6BDDE10BD0CF481C7EA9 /* Pods_Treasure_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -38,6 +41,7 @@
 		0B464AB633EB42D5105D0A37 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				09BEE2941E257175008B0858 /* Mapper.framework */,
 				6A55D4D0188E25A98E23B096 /* Pods_Treasure_Tests.framework */,
 			);
 			name = Frameworks;

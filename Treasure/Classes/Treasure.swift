@@ -9,34 +9,34 @@
 import Foundation
 import Mapper
 
-struct Treasure {
+public struct Treasure {
     
     //Keep an update pool of included resources
     private static var includedDataPool = [String: Any]()
     
-    static var dataPool: NSDictionary {
+    public static var dataPool: NSDictionary {
         return Treasure.includedDataPool as NSDictionary
     }
     
     private let json: NSDictionary
     
-    var meta: NSDictionary? {
+    public var meta: NSDictionary? {
         return json[Key.meta] as? NSDictionary
     }
     
-    var errors: NSDictionary? {
+    public var errors: NSDictionary? {
         return json[Key.errors] as? NSDictionary
     }
     
-    var jsonapi: NSDictionary? {
+    public var jsonapi: NSDictionary? {
         return json[Key.jsonapi] as? NSDictionary
     }
     
-    var links: NSDictionary? {
+    public var links: NSDictionary? {
         return json[Key.links] as? NSDictionary
     }
     
-    var includedLinks: NSDictionary? {
+    public var includedLinks: NSDictionary? {
         if let included = json[Key.included] as? NSDictionary {
             return included[Key.links] as? NSDictionary
         }
@@ -44,7 +44,7 @@ struct Treasure {
         return nil
     }
     
-    init(json: [String: Any]) {
+    public init(json: [String: Any]) {
         self.json = json as NSDictionary
         
         if let includedData = json[Key.included] as? [[String: Any]] {
@@ -52,7 +52,7 @@ struct Treasure {
         }
     }
     
-    init(json: NSDictionary) {
+    public init(json: NSDictionary) {
         self.json = json
         
         if let includedData = json[Key.included] as? [[String: Any]] {
@@ -60,15 +60,15 @@ struct Treasure {
         }
     }
     
-    func map<T: Resource>() -> T? {
+    public func map<T: Resource>() -> T? {
         return try? Mapper(JSON: json).from(Key.data)
     }
     
-    func map<T: Resource>() -> [T]? {
+    public func map<T: Resource>() -> [T]? {
         return try? Mapper(JSON: json).from(Key.data)
     }
     
-    static func clearDataPool() {
+    public static func clearDataPool() {
         Treasure.includedDataPool.removeAll()
     }
     
@@ -96,13 +96,13 @@ struct Treasure {
 
 extension Mapper {
     
-    func fromRelationship<T: Resource>(_ relationship: ToOneRelationship?) throws -> T {
+    public func fromRelationship<T: Resource>(_ relationship: ToOneRelationship?) throws -> T {
         guard relationship?.data != nil else { throw MapperError.customError(field: Key.data, message: "Relationship data is nil") }
         
         return try includedDataFor(relationshipData: relationship!.data!)
     }
     
-    func fromRelationship<T: Resource>(_ relationship: ToManyRelationship?) throws -> [T] {
+    public func fromRelationship<T: Resource>(_ relationship: ToManyRelationship?) throws -> [T] {
         guard relationship?.data != nil else { throw MapperError.customError(field: Key.data, message: "Relationship data is nil") }
         
         return try relationship!.data!.map({ (data) -> T in
@@ -136,27 +136,27 @@ extension Mapper {
 
 struct Key {
     
-    static let id = "id"
-    static let type = "type"
-    static let data = "data"
-    static let links = "links"
-    static let included = "included"
-    static let meta = "meta"
-    static let errors = "errors"
-    static let jsonapi = "jsonapi"
-    static let first = "first"
-    static let last = "last"
-    static let prev = "prev"
-    static let next = "next"
-    static let page = "page"
-    static let self_ = "self"
-    static let relationship = "relationship"
+    public static let id = "id"
+    public static let type = "type"
+    public static let data = "data"
+    public static let links = "links"
+    public static let included = "included"
+    public static let meta = "meta"
+    public static let errors = "errors"
+    public static let jsonapi = "jsonapi"
+    public static let first = "first"
+    public static let last = "last"
+    public static let prev = "prev"
+    public static let next = "next"
+    public static let page = "page"
+    public static let self_ = "self"
+    public static let relationship = "relationship"
     
-    static func attributes(_ key: String) -> String {
+    public static func attributes(_ key: String) -> String {
         return "attributes.\(key)"
     }
     
-    static func relationships(_ key: String) -> String {
+    public static func relationships(_ key: String) -> String {
         return "relationships.\(key)"
     }
 }
@@ -165,7 +165,7 @@ func ==(lhs: Resource, rhs: Resource) -> Bool {
     return lhs.type == rhs.type && lhs.id == rhs.id
 }
 
-protocol Resource: Mappable {
+public protocol Resource: Mappable {
     
     var id: String {get}
     var type: String {get}
@@ -176,34 +176,34 @@ private protocol Relationship: Mappable {
     var links: NSDictionary? {get}
 }
 
-struct RelationshipData: Resource {
+public struct RelationshipData: Resource {
     
-    let type: String
-    let id: String
+    public let type: String
+    public let id: String
     
-    init(map: Mapper) throws {
+    public init(map: Mapper) throws {
         type = try map.from(Key.type)
         id = try map.from(Key.id)
     }
 }
 
-struct ToOneRelationship: Relationship {
+public struct ToOneRelationship: Relationship {
     
-    let data: RelationshipData?
-    var links: NSDictionary?
+    public let data: RelationshipData?
+    public var links: NSDictionary?
     
-    init(map: Mapper) throws {
+    public init(map: Mapper) throws {
         data = try? map.from(Key.data)
         links = try? map.from(Key.links)
     }
 }
 
-struct ToManyRelationship: Relationship {
+public struct ToManyRelationship: Relationship {
     
     let data: [RelationshipData]?
-    var links: NSDictionary?
+    public var links: NSDictionary?
     
-    init(map: Mapper) throws {
+    public init(map: Mapper) throws {
         data = try? map.from(Key.data)
         links = try? map.from(Key.links)
     }
