@@ -13,14 +13,14 @@ import Mapper
 public extension Mapper {
     
     /// Maps a ToOneRelationship based on the mapping provided by implementing the Resource protocol
-    public func from<T: Resource>(relationship: ToOneRelationship?) throws -> T {
+    public func from<T: Resource>(_ relationship: ToOneRelationship?) throws -> T {
         guard relationship?.data != nil else { throw MapperError.customError(field: Key.data, message: "Relationship data is nil") }
         
         return try includedDataFor(relationshipData: relationship!.data!)
     }
     
     /// Maps a ToManyRelationship based on the mapping provided by implementing the Resource protocol
-    public func from<T: Resource>(relationship: ToManyRelationship?) throws -> [T] {
+    public func from<T: Resource>(_ relationship: ToManyRelationship?) throws -> [T] {
         guard relationship?.data != nil else { throw MapperError.customError(field: Key.data, message: "Relationship data is nil") }
         
         return try relationship!.data!.map({ (data) -> T in

@@ -46,7 +46,7 @@ struct Project: Resource {
         title = try map.from(Key.attributes("title"))
         
         let managerRelationship: ToOneRelationship? = try? map.from(Key.relationships("users"))
-        manager = try? map.fromRelationship(managerRelationship)
+        manager = try? from(relationship: managerRelationship)
     }
 }
 ```
