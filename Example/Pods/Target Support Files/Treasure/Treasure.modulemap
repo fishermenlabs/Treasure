@@ -1,0 +1,6 @@
+framework module Treasure {
+  umbrella header "Treasure-umbrella.h"
+
+  export *
+  module * { export * }
+}

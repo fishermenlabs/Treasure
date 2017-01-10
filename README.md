@@ -1,29 +1,75 @@
 # Treasure
 
-[![CI Status](http://img.shields.io/travis/kfweber/Treasure.svg?style=flat)](https://travis-ci.org/kfweber/Treasure)
-[![Version](https://img.shields.io/cocoapods/v/Treasure.svg?style=flat)](http://cocoapods.org/pods/Treasure)
-[![License](https://img.shields.io/cocoapods/l/Treasure.svg?style=flat)](http://cocoapods.org/pods/Treasure)
-[![Platform](https://img.shields.io/cocoapods/p/Treasure.svg?style=flat)](http://cocoapods.org/pods/Treasure)
-
-## Example
-
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
-
-## Requirements
+Treasure is a small set of tools on top of Lyft's [Mapper](https://github.com/lyft/mapper) library to convert objects according to the [JSON API](http://jsonapi.org) specification.  It currently does not strictly adhere to the JSON API specification, but we want it to eventually. If you're not using the JSON API specification, then only using Mapper should be sufficient.
 
 ## Installation
 
-Treasure is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+#### With [CocoaPods](http://cocoapods.org/)
 
 ```ruby
+use_frameworks!
+
 pod "Treasure"
 ```
 
-## Author
+#### With [Carthage](https://github.com/Carthage/Carthage)
 
-kfweber, kevinfweber@gmail.com
+```
+github "fishermenlabs/treasure"
+```
+
+## Usage
+
+Treasure hinges on [Mapper](https://github.com/lyft/mapper). If you're not familiar with it, then go read up on it first.
+
+Objects must conform to either the `Resource` protocol, which conforms to Mapper's `Mappable` protocol.
+`Key` provides convenient constants and functions to construct String keys for Mapper.
+Relationships are represented by either a `ToOneRelationship` or a `ToManyRelationship`.
+Relationships can be used to map included resources, which are placed into a shared data pool as received by Treasure.  Included resources are not cached, so the data pool will only exist for the current lifecycle.
+
+
+```swift
+struct Project: Resource {
+    
+    let id: String
+    let type: String
+    let title: String
+    let manager: User?
+
+    init(map: Mapper) throws {
+        id = try map.from(Key.id)
+        type = try map.from(Key.type)
+        title = try map.from(Key.attributes("title"))
+        
+        let managerRelationship: ToOneRelationship? = try? map.from(Key.relationships("users"))
+        manager = try? map.fromRelationship(managerRelationship)
+    }
+}
+```
+
+You can then map to your object by instantiating a new Treasure with your received JSON.
+
+```swift
+if let json = json as? [String: Any] {
+    let projects: [Project]? = Treasure(json: json).map()
+}
+```
+
+Other top-level JSON API objects can be accessed through your Treasure instance.
+
+```swift
+if let json = json as? [String: Any] {
+
+    let treasure = Treasure(json: json)
+    let projects: [Project]? = treasure.map()
+    
+    guard projects != nil else {
+        print(treasure.errors)
+    }
+}
+```
 
 ## License
 
 Treasure is available under the MIT license. See the LICENSE file for more info.
+Lyft's Mapper is available under the Apache 2.0 License

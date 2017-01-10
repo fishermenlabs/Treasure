@@ -1,42 +1,19 @@
-#
-# Be sure to run `pod lib lint Treasure.podspec' to ensure this is a
-# valid spec before submitting.
-#
-# Any lines starting with a # are optional, but their use is encouraged
-# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
-#
-
 Pod::Spec.new do |s|
   s.name             = 'Treasure'
-  s.version          = '0.1.0'
-  s.summary          = 'A short description of Treasure.'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
+  s.version          = '0.0.1'
+  s.summary          = 'A small set of tools for deserializing JSON API objects.'
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+Treasure is a small set of tools on top of Lyft's Mapper library to convert objects according to the JSON API specification.
                        DESC
 
-  s.homepage         = 'https://github.com/<GITHUB_USERNAME>/Treasure'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
+  s.homepage         = 'https://github.com/fishermenlabs/Treasure'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'kfweber' => 'kevinfweber@gmail.com' }
-  s.source           = { :git => 'https://github.com/<GITHUB_USERNAME>/Treasure.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.author           = { 'kfweber' => 'kevinw@fishermenlabs.com' }
+  s.source           = { :git => 'https://github.com/fishermenlabs>/Treasure.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'Treasure/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'Treasure' => ['Treasure/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'ModelMapper', '~> 6.0.0'
 end

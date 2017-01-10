@@ -1,0 +1,19 @@
+PODS:
+  - ModelMapper (6.0.0)
+  - Treasure (0.0.1):
+    - ModelMapper (~> 6.0.0)
+
+DEPENDENCIES:
+  - Treasure (from `../`)
+
+EXTERNAL SOURCES:
+  Treasure:
+    :path: ../
+
+SPEC CHECKSUMS:
+  ModelMapper: 3596a82f26c43491f6a8d3a00bcdba6ba0e62a93
+  Treasure: 293e361fdb1288a30da7fb43eaa0fe31cff8a105
+
+PODFILE CHECKSUM: 6bd0fb4d78752947dafe91beeb3f71dc5f170023
+
+COCOAPODS: 1.1.1
