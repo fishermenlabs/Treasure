@@ -1,0 +1,6 @@
+use_frameworks!
+target 'Treasure_Tests' do
+  pod 'Treasure', :path => '../'
+  
+  
+end
