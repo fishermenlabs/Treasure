@@ -83,16 +83,22 @@ public struct Treasure {
         for data in data {
             if let type = data[Key.type] as? String {
                 if let typePool = Treasure.includedDataPool[type] as? [[String: Any]] {
-                    if typePool.filter({ (typeData) -> Bool in
+                    
+                    if let index = typePool.index(where: { (typeData) -> Bool in
                         if let lhs = typeData[Key.id] as? String, let rhs = data[Key.id] as? String {
                             return lhs == rhs
                         }
                         return false
-                    }).isEmpty {
+                    }) {
+                        var currentPool = typePool
+                        currentPool.remove(at: index)
+                        currentPool.insert(data, at: index)
+                    } else {
                         var currentPool = typePool
                         currentPool.append(data)
                         Treasure.includedDataPool[type] = currentPool
                     }
+                
                 } else {
                     Treasure.includedDataPool[type] = [data]
                 }

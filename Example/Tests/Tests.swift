@@ -1,6 +1,7 @@
 import UIKit
 import XCTest
 import Treasure
+import Mapper
 
 class Tests: XCTestCase {
     
@@ -15,8 +16,69 @@ class Tests: XCTestCase {
     }
     
     func testExample() {
-        // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
+        
+        struct User: Resource {
+            
+            let id: String
+            let type: String
+            let name: String
+            
+            init(map: Mapper) throws {
+                id = try map.from(Key.id)
+                type = try map.from(Key.type)
+                name = try map.from(Key.attributes("name"))
+            }
+        }
+        
+        struct Project: Resource {
+            
+            let id: String
+            let type: String
+            let title: String
+            let manager: User?
+            
+            init(map: Mapper) throws {
+                id = try map.from(Key.id)
+                type = try map.from(Key.type)
+                title = try map.from(Key.attributes("title"))
+                
+                let managerRelationship: ToOneRelationship? = try? map.from(Key.relationships("users"))
+                manager = try? map.from(managerRelationship)
+            }
+        }
+        
+        let userJson: [String: Any] = [
+            "id": "4",
+            "type": "users",
+            "attributes": [
+                "name": "Test User"
+            ]
+        ]
+        
+        let json: [String: Any] = [
+            "data": [
+                "id": "1",
+                "type": "projects",
+                "attributes": [
+                    "title": "Test Project"
+                ],
+                "relationships": [
+                    "users": [
+                        "data": ["type": "users", "id": "4"]
+                    ]
+                ]
+            ],
+            "included": [userJson]
+        ]
+        
+        let testProject: Project? = Treasure(json: json).map()
+        let testUser: User? = try? Mapper(JSON: userJson as NSDictionary).from("")
+        
+        if let manager = testProject?.manager, let user = testUser {
+            XCTAssertTrue(manager == user)
+        } else {
+            XCTFail()
+        }
     }
     
     func testPerformanceExample() {

@@ -7,22 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		09F174551E25853B00ACC729 /* Mapper+Treasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F174541E25853B00ACC729 /* Mapper+Treasure.swift */; };
-		09F174571E2585BB00ACC729 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F174561E2585BB00ACC729 /* Resource.swift */; };
-		09F174591E2585D700ACC729 /* Relationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F174581E2585D700ACC729 /* Relationship.swift */; };
 		0AB8712E0EF7AE5044FDADDEFD7CE595 /* NSURL+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CAA161ED14741E10DFD30850B44BA50 /* NSURL+Convertible.swift */; };
+		0C7022862BC79F168E02744777C0E966 /* Mapper+Treasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = A265FC37D849C03089F01262CCA9B35E /* Mapper+Treasure.swift */; };
 		134A12DD1D7C12A998E37CF3DC3C8088 /* Mapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A8336AB51B503A991113A86208C4F9 /* Mapper.swift */; };
 		290214C25D71DE9A06923DC8F6100462 /* Pods-Treasure_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 05B4E8429C4C0CD5E6C760F40C4E7D0F /* Pods-Treasure_Tests-dummy.m */; };
 		2C1C98F56E8042C99CBD1ACD4655BADC /* Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1C4D650540BD6D945150E8DBC3FEED /* Convertible.swift */; };
+		33E27E6195B3B3662D299DE5F358CE2E /* Treasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C81E7948E15033D084A87C5185895D5 /* Treasure.swift */; };
 		4084AD3E1980E56895B686046F34E698 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94BCA3ADAF9E96E9381445B1491E6AB4 /* Foundation.framework */; };
 		4AFC946F0E48D623148269BB15C4F6E7 /* ModelMapper-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD82B1305F27CD36DD16AAC03B5E585 /* ModelMapper-dummy.m */; };
+		4BBE0BBB812E5C24F586156CCF72D8C8 /* Relationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CA4917D1E092CFBEBBE7B910D167F9 /* Relationship.swift */; };
 		4DD8D6205D74AADA6505AA77DFA2B6F0 /* Treasure-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 562456659322E9406266ECEE7AED9769 /* Treasure-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		52FDFEB88340E81F6A9773E9D0166226 /* NSDictionary+Safety.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFB4A284C867566F1A9127436F30CE0 /* NSDictionary+Safety.swift */; };
-		5551049A230009257C84A1F45B01A8CA /* Treasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A10C5558B00099FBECB0437F785B04 /* Treasure.swift */; };
 		60B3F5CAB55BB865C3B23BB067DC39AC /* ModelMapper-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 27B97CB776F4D94682F002F260545D23 /* ModelMapper-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		81426FD9F5B6972D76EA7C27643B0BDF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94BCA3ADAF9E96E9381445B1491E6AB4 /* Foundation.framework */; };
+		8316EA25D6BE4154011FCF454543D105 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92CF8D52CE9EB2358A9690ADF8A1E9C /* Resource.swift */; };
 		861B000A5365210BE6B4072A1BD78F0B /* Mapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 721F95FF0695A6DE9581808C127F894B /* Mapper.framework */; };
-		87DDC94ADE95FC7DE387562C36E3893C /* Treasure-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 33EFFF5A2F022C6EA71C1C0861CDD81E /* Treasure-dummy.m */; };
+		898DCC1D40725126B4AAB98294EBC23F /* Treasure-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 33EFFF5A2F022C6EA71C1C0861CDD81E /* Treasure-dummy.m */; };
 		8CDA76289132112561AA2B11D5BED052 /* Mappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482956375BF4A3958855C2F246FFE53B /* Mappable.swift */; };
 		996D1C980ECE9F7C55603B195D44FE47 /* Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED7D2A09AC4814A21A170E8F10A1799 /* Transform.swift */; };
 		BCE58D4873689DD24AB914D02457E543 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94BCA3ADAF9E96E9381445B1491E6AB4 /* Foundation.framework */; };
@@ -58,46 +58,46 @@
 
 /* Begin PBXFileReference section */
 		05B4E8429C4C0CD5E6C760F40C4E7D0F /* Pods-Treasure_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Treasure_Tests-dummy.m"; sourceTree = "<group>"; };
-		09F174541E25853B00ACC729 /* Mapper+Treasure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mapper+Treasure.swift"; sourceTree = "<group>"; };
-		09F174561E2585BB00ACC729 /* Resource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
-		09F174581E2585D700ACC729 /* Relationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relationship.swift; sourceTree = "<group>"; };
 		0B6B4773B765C4EDBDBA0A6893C5ABC0 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0ED7D2A09AC4814A21A170E8F10A1799 /* Transform.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Transform.swift; path = Sources/Transform.swift; sourceTree = "<group>"; };
 		197C979FF0B35B92DC50789916547059 /* Pods-Treasure_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Treasure_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		2170BE7C410F850A2068EE304F7C99B9 /* Pods-Treasure_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Treasure_Tests-umbrella.h"; sourceTree = "<group>"; };
-		248E7CE547762DE24724A77FB6CE9969 /* Treasure.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Treasure.modulemap; sourceTree = "<group>"; };
-		24A10C5558B00099FBECB0437F785B04 /* Treasure.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Treasure.swift; sourceTree = "<group>"; };
+		248E7CE547762DE24724A77FB6CE9969 /* Treasure.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = Treasure.modulemap; sourceTree = "<group>"; };
 		27B97CB776F4D94682F002F260545D23 /* ModelMapper-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ModelMapper-umbrella.h"; sourceTree = "<group>"; };
 		33EFFF5A2F022C6EA71C1C0861CDD81E /* Treasure-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Treasure-dummy.m"; sourceTree = "<group>"; };
-		42FD36BF7BD5A0058E603819ADFB44E1 /* Pods_Treasure_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Treasure_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		42FD36BF7BD5A0058E603819ADFB44E1 /* Pods_Treasure_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Treasure_Tests.framework; path = "Pods-Treasure_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		482956375BF4A3958855C2F246FFE53B /* Mappable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Mappable.swift; path = Sources/Mappable.swift; sourceTree = "<group>"; };
 		4CFB4A284C867566F1A9127436F30CE0 /* NSDictionary+Safety.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSDictionary+Safety.swift"; path = "Sources/NSDictionary+Safety.swift"; sourceTree = "<group>"; };
 		562456659322E9406266ECEE7AED9769 /* Treasure-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Treasure-umbrella.h"; sourceTree = "<group>"; };
 		5ED3372E916D27CF5E8FBCE8D2170D97 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		62097009305C08AF4B5EDF50A0CBD223 /* Pods-Treasure_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Treasure_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		6C81E7948E15033D084A87C5185895D5 /* Treasure.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Treasure.swift; sourceTree = "<group>"; };
 		6E1C4D650540BD6D945150E8DBC3FEED /* Convertible.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Convertible.swift; path = Sources/Convertible.swift; sourceTree = "<group>"; };
 		721F95FF0695A6DE9581808C127F894B /* Mapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Mapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7389C77C763DE1E9904EE476CFD848DE /* Pods-Treasure_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Treasure_Tests.modulemap"; sourceTree = "<group>"; };
+		7389C77C763DE1E9904EE476CFD848DE /* Pods-Treasure_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-Treasure_Tests.modulemap"; sourceTree = "<group>"; };
 		73A8336AB51B503A991113A86208C4F9 /* Mapper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Mapper.swift; path = Sources/Mapper.swift; sourceTree = "<group>"; };
 		7560C24F95F82148955FDBE710335BA0 /* Pods-Treasure_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Treasure_Tests-resources.sh"; sourceTree = "<group>"; };
 		7B1FC6B70C052D620F6F28E160BAD173 /* Transform+Dictionary.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Transform+Dictionary.swift"; path = "Sources/Transform+Dictionary.swift"; sourceTree = "<group>"; };
 		7D38F4DF2DA3AF3A51D58FA4E7000CF6 /* MapperError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapperError.swift; path = Sources/MapperError.swift; sourceTree = "<group>"; };
 		8A0E61586104F4B1BE92496651C9FDB0 /* DefaultConvertible.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DefaultConvertible.swift; path = Sources/DefaultConvertible.swift; sourceTree = "<group>"; };
 		8C219317D8EDB676EE89BC9645A9AD6A /* Treasure-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Treasure-prefix.pch"; sourceTree = "<group>"; };
-		8DA7C57898494A9E5BDA6520A76A62B4 /* ModelMapper.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = ModelMapper.modulemap; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9486A9FDB95E75A44098D2CFDF5269AA /* Mapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Mapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DA7C57898494A9E5BDA6520A76A62B4 /* ModelMapper.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = ModelMapper.modulemap; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9486A9FDB95E75A44098D2CFDF5269AA /* Mapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Mapper.framework; path = ModelMapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94BCA3ADAF9E96E9381445B1491E6AB4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		97BE5367C029C460414552AF9029234D /* Treasure.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Treasure.xcconfig; sourceTree = "<group>"; };
 		9CAA161ED14741E10DFD30850B44BA50 /* NSURL+Convertible.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSURL+Convertible.swift"; path = "Sources/NSURL+Convertible.swift"; sourceTree = "<group>"; };
+		A265FC37D849C03089F01262CCA9B35E /* Mapper+Treasure.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Mapper+Treasure.swift"; sourceTree = "<group>"; };
 		AEE62BC2D447FC41EE5EA900EF905D11 /* Pods-Treasure_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Treasure_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		B50CB6CB0285E8AB38E7F298FA19683C /* ModelMapper.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ModelMapper.xcconfig; sourceTree = "<group>"; };
 		B79340B50001CEC88CA312A7541E64BC /* ModelMapper-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ModelMapper-prefix.pch"; sourceTree = "<group>"; };
+		C92CF8D52CE9EB2358A9690ADF8A1E9C /* Resource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		D0C6592B44C67FC6C62A051E46B74578 /* Pods-Treasure_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Treasure_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
-		D8404299F0EC3348604F015B8E6990C3 /* Treasure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Treasure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8404299F0EC3348604F015B8E6990C3 /* Treasure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Treasure.framework; path = Treasure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD82B1305F27CD36DD16AAC03B5E585 /* ModelMapper-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ModelMapper-dummy.m"; sourceTree = "<group>"; };
 		E31CAC90A1543E0069EEBFE496CCD6AD /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E9B4DC7D20BBE7FF9DC07AB96678A913 /* Pods-Treasure_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Treasure_Tests-frameworks.sh"; sourceTree = "<group>"; };
+		F5CA4917D1E092CFBEBBE7B910D167F9 /* Relationship.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Relationship.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,12 +129,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		145D0C99958E23EAC4D267A219540A94 /* Treasure */ = {
+		070AC59336B3CDFC17D8BEF61233D48C /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				798ACEB5787091F635071B6F721C7902 /* Classes */,
+				A265FC37D849C03089F01262CCA9B35E /* Mapper+Treasure.swift */,
+				F5CA4917D1E092CFBEBBE7B910D167F9 /* Relationship.swift */,
+				C92CF8D52CE9EB2358A9690ADF8A1E9C /* Resource.swift */,
+				6C81E7948E15033D084A87C5185895D5 /* Treasure.swift */,
 			);
-			path = Treasure;
+			name = Classes;
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		16D24F159F0ECA7845CAC6962DAB9805 /* Support Files */ = {
@@ -172,7 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				AA156B11E714336E813B1A1CEE08D570 /* Support Files */,
-				145D0C99958E23EAC4D267A219540A94 /* Treasure */,
+				C96AF6FD36021EA84520AD50EA7BD7C7 /* Treasure */,
 			);
 			name = Treasure;
 			path = ../..;
@@ -194,17 +198,6 @@
 			);
 			name = "Pods-Treasure_Tests";
 			path = "Target Support Files/Pods-Treasure_Tests";
-			sourceTree = "<group>";
-		};
-		798ACEB5787091F635071B6F721C7902 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				24A10C5558B00099FBECB0437F785B04 /* Treasure.swift */,
-				09F174541E25853B00ACC729 /* Mapper+Treasure.swift */,
-				09F174561E2585BB00ACC729 /* Resource.swift */,
-				09F174581E2585D700ACC729 /* Relationship.swift */,
-			);
-			path = Classes;
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
@@ -241,6 +234,7 @@
 				7B1FC6B70C052D620F6F28E160BAD173 /* Transform+Dictionary.swift */,
 				16D24F159F0ECA7845CAC6962DAB9805 /* Support Files */,
 			);
+			name = ModelMapper;
 			path = ModelMapper;
 			sourceTree = "<group>";
 		};
@@ -284,6 +278,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		C96AF6FD36021EA84520AD50EA7BD7C7 /* Treasure */ = {
+			isa = PBXGroup;
+			children = (
+				070AC59336B3CDFC17D8BEF61233D48C /* Classes */,
+			);
+			name = Treasure;
+			path = Treasure;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -318,7 +321,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5EC586B10E1D1667918954904D199C98 /* Build configuration list for PBXNativeTarget "Treasure" */;
 			buildPhases = (
-				FC78CA987A2498A3886252B595148A3E /* Sources */,
+				DFD13786B594C36A021C6EB612E98D82 /* Sources */,
 				B38201C460FF33154848F7ADACB4C005 /* Frameworks */,
 				FA7E5F0670DC086D2A49BAF5CEA0BD65 /* Headers */,
 			);
@@ -422,15 +425,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FC78CA987A2498A3886252B595148A3E /* Sources */ = {
+		DFD13786B594C36A021C6EB612E98D82 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				09F174591E2585D700ACC729 /* Relationship.swift in Sources */,
-				87DDC94ADE95FC7DE387562C36E3893C /* Treasure-dummy.m in Sources */,
-				09F174571E2585BB00ACC729 /* Resource.swift in Sources */,
-				5551049A230009257C84A1F45B01A8CA /* Treasure.swift in Sources */,
-				09F174551E25853B00ACC729 /* Mapper+Treasure.swift in Sources */,
+				0C7022862BC79F168E02744777C0E966 /* Mapper+Treasure.swift in Sources */,
+				4BBE0BBB812E5C24F586156CCF72D8C8 /* Relationship.swift in Sources */,
+				8316EA25D6BE4154011FCF454543D105 /* Resource.swift in Sources */,
+				898DCC1D40725126B4AAB98294EBC23F /* Treasure-dummy.m in Sources */,
+				33E27E6195B3B3662D299DE5F358CE2E /* Treasure.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

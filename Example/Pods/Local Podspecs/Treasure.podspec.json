@@ -12,7 +12,7 @@
     "kfweber": "kevinw@fishermenlabs.com"
   },
   "source": {
-    "git": "https://github.com/fishermenlabs>/Treasure.git",
+    "git": "https://github.com/fishermenlabs/Treasure.git",
     "tag": "0.0.1"
   },
   "platforms": {
