@@ -9,59 +9,68 @@
 import Foundation
 import Mapper
 
+public typealias JSONObject = [String: Any]
+
 public struct Treasure {
     
     /// The shared data pool of included resources for the current lifecycle
-    private static var includedDataPool = [String: Any]()
+    private static var includedDataPool = JSONObject()
     
-    public static var dataPool: NSDictionary {
-        return Treasure.includedDataPool as NSDictionary
+    public static var dataPool: JSONObject {
+        return Treasure.includedDataPool
     }
     
-    /// The full json object received on instantiation
-    private let json: NSDictionary
+    /// The full json object received on initialization
+    private let json: JSONObject
     
     /// Returns the objects under the 'meta' key according to the JSON API specification
-    public var meta: NSDictionary? {
-        return json[Key.meta] as? NSDictionary
+    public var meta: JSONObject? {
+        return json[Key.meta] as? JSONObject
     }
     
     /// Returns the objects under the 'errors' key according to the JSON API specification
-    public var errors: NSDictionary? {
-        return json[Key.errors] as? NSDictionary
+    public var errors: [Errors]? {
+        return try? Mapper(JSON: json).from(Key.errors)
     }
     
     /// Returns the objects under the 'jsonapi' key according to the JSON API specification
-    public var jsonapi: NSDictionary? {
-        return json[Key.jsonapi] as? NSDictionary
+    public var jsonapi: JSONAPI? {
+        return try? Mapper(JSON: json).from(Key.jsonapi)
     }
     
     /// Returns the links objects under the 'links' key according to the JSON API specification
-    public var links: NSDictionary? {
-        return json[Key.links] as? NSDictionary
+    public var links: JSONObject? {
+        return json[Key.links] as? JSONObject
     }
     
     /// Returns the links objects within the included object under the 'links' key according to the JSON API specification
-    public var includedLinks: NSDictionary? {
-        if let included = json[Key.included] as? NSDictionary {
-            return included[Key.links] as? NSDictionary
+    public var includedLinks: JSONObject? {
+        if let included = json[Key.included] as? JSONObject {
+            return included[Key.links] as? JSONObject
         }
         
         return nil
     }
     
-    public init(json: [String: Any]) {
-        self.json = json as NSDictionary
+    public init(json: JSONObject) {
+        self.json = json
         
-        if let includedData = json[Key.included] as? [[String: Any]] {
-            pool(includedData)
-        }
+        try initialize()
     }
     
     public init(json: NSDictionary) {
-        self.json = json
+        self.json = json as! JSONObject
         
-        if let includedData = json[Key.included] as? [[String: Any]] {
+        try initialize()
+    }
+    
+    private func initialize() {
+
+        poolIncludedData()
+    }
+    
+    private func poolIncludedData() {
+        if let includedData = json[Key.included] as? [JSONObject] {
             pool(includedData)
         }
     }
@@ -79,10 +88,10 @@ public struct Treasure {
     }
     
     /// Adds the resources in data to the includedDataPool if needed
-    private func pool(_ data: [[String: Any]]) {
+    private func pool(_ data: [JSONObject]) {
         for data in data {
             if let type = data[Key.type] as? String {
-                if let typePool = Treasure.includedDataPool[type] as? [[String: Any]] {
+                if let typePool = Treasure.includedDataPool[type] as? [JSONObject] {
                     
                     if let index = typePool.index(where: { (typeData) -> Bool in
                         if let lhs = typeData[Key.id] as? String, let rhs = data[Key.id] as? String {
@@ -131,5 +140,39 @@ public struct Key {
     
     public static func relationships(_ key: String) -> String {
         return "relationships.\(key)"
+    }
+}
+
+public struct Errors: Mappable {
+    
+    let id: String?
+    let links: JSONObject?
+    let status: String?
+    let code: String?
+    let title: String?
+    let detail: String?
+    let source: JSONObject?
+    let meta: JSONObject?
+    
+    public init(map: Mapper) throws {
+        id = try? map.from(Key.id)
+        links = try? map.from(Key.links)
+        status = try? map.from("status")
+        code = try? map.from("code")
+        title = try? map.from("title")
+        detail = try? map.from("detail")
+        source = try? map.from("source")
+        meta = try? map.from(Key.meta)
+    }
+}
+
+public struct JSONAPI: Mappable {
+    
+    let version: String?
+    let meta: JSONObject?
+    
+    public init(map: Mapper) throws {
+        version = try? map.from("version")
+        meta = try? map.from(Key.meta)
     }
 }

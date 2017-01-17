@@ -47,7 +47,7 @@ class Tests: XCTestCase {
             }
         }
         
-        let userJson: [String: Any] = [
+        let userJson: JSONObject = [
             "id": "4",
             "type": "users",
             "attributes": [
@@ -55,7 +55,7 @@ class Tests: XCTestCase {
             ]
         ]
         
-        let json: [String: Any] = [
+        let json: JSONObject = [
             "data": [
                 "id": "1",
                 "type": "projects",
@@ -72,7 +72,7 @@ class Tests: XCTestCase {
         ]
         
         let testProject: Project? = Treasure(json: json).map()
-        let testUser: User? = try? Mapper(JSON: userJson as NSDictionary).from("")
+        let testUser: User? = User.from(userJson)
         
         if let manager = testProject?.manager, let user = testUser {
             XCTAssertTrue(manager == user)

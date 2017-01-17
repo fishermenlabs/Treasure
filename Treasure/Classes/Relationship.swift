@@ -12,13 +12,13 @@ import Mapper
 
 private protocol Relationship: Mappable {
     
-    var links: NSDictionary? {get}
+    var links: JSONObject? {get}
 }
 
 public struct ToOneRelationship: Relationship {
     
     public let data: RelationshipData?
-    public var links: NSDictionary?
+    public var links: JSONObject?
     
     public init(map: Mapper) throws {
         data = try? map.from(Key.data)
@@ -29,7 +29,7 @@ public struct ToOneRelationship: Relationship {
 public struct ToManyRelationship: Relationship {
     
     public let data: [RelationshipData]?
-    public var links: NSDictionary?
+    public var links: JSONObject?
     
     public init(map: Mapper) throws {
         data = try? map.from(Key.data)
