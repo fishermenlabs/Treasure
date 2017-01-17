@@ -21,8 +21,8 @@ public extension Mappable {
 
 public extension Mapper {
     
-    public init(JSON: JSONObject) throws {
-        try self.init(JSON: JSON as NSDictionary)
+    public init(JSON: JSONObject) {
+        self.init(JSON: JSON as NSDictionary)
     }
     
     /// Maps a ToOneRelationship based on the mapping provided by implementing the Resource protocol

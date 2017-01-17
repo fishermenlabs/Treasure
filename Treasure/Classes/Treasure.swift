@@ -55,13 +55,13 @@ public struct Treasure {
     public init(json: JSONObject) {
         self.json = json
         
-        try initialize()
+        initialize()
     }
     
     public init(json: NSDictionary) {
         self.json = json as! JSONObject
         
-        try initialize()
+        initialize()
     }
     
     private func initialize() {
