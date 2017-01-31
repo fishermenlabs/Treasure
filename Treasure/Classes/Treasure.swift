@@ -11,11 +11,78 @@ import Mapper
 
 public typealias JSONObject = [String: Any]
 
+public struct Key {
+    
+    public static let id = "id"
+    public static let type = "type"
+    public static let data = "data"
+    public static let links = "links"
+    public static let included = "included"
+    public static let meta = "meta"
+    public static let errors = "errors"
+    public static let jsonapi = "jsonapi"
+    public static let first = "first"
+    public static let last = "last"
+    public static let prev = "prev"
+    public static let next = "next"
+    public static let page = "page"
+    public static let self_ = "self"
+    public static let relationship = "relationship"
+    
+    public static func attributes(_ key: String? = nil) -> String {
+        guard key?.isEmpty == false else {
+            return "attributes"
+        }
+        
+        return "attributes.\(key!)"
+    }
+    
+    public static func relationships(_ key: String? = nil) -> String {
+        guard key?.isEmpty == false else {
+            return "relationships"
+        }
+        
+        return "relationships.\(key!)"
+    }
+}
+
+public struct Errors: Mappable {
+    
+    let id: String?
+    let links: JSONObject?
+    let status: String?
+    let code: String?
+    let title: String?
+    let detail: String?
+    let source: JSONObject?
+    let meta: JSONObject?
+    
+    public init(map: Mapper) throws {
+        id = try? map.from(Key.id)
+        links = try? map.from(Key.links)
+        status = try? map.from("status")
+        code = try? map.from("code")
+        title = try? map.from("title")
+        detail = try? map.from("detail")
+        source = try? map.from("source")
+        meta = try? map.from(Key.meta)
+    }
+}
+
+public struct JSONAPI: Mappable {
+    
+    let version: String?
+    let meta: JSONObject?
+    
+    public init(map: Mapper) throws {
+        version = try? map.from("version")
+        meta = try? map.from(Key.meta)
+    }
+}
+
 public struct Treasure {
     
     /// The shared data pool of included resources for the current lifecycle
-    private static var includedDataPool = JSONObject()
-    
     public static var dataPool: JSONObject {
         return Treasure.includedDataPool
     }
@@ -64,17 +131,6 @@ public struct Treasure {
         initialize()
     }
     
-    private func initialize() {
-
-        poolIncludedData()
-    }
-    
-    private func poolIncludedData() {
-        if let includedData = json[Key.included] as? [JSONObject] {
-            pool(includedData)
-        }
-    }
-    
     public func map<T: Resource>() -> T? {
         return try? Mapper(JSON: json).from(Key.data)
     }
@@ -85,6 +141,42 @@ public struct Treasure {
     
     public static func clearDataPool() {
         Treasure.includedDataPool.removeAll()
+    }
+    
+    /// Builds a new JSON API resource for updating attributes with an optional single Relationship
+    public static func jsonForResourceUpdateWith(type: String, id: String, attributes: JSONObject, relationship: JSONObject? = nil) -> JSONObject {
+        return jsonForResourceWith(type: type, id: id, attributes: attributes, relationship: relationship)
+    }
+    
+    /// Builds a new JSON API resource for updating attributes with an optional multiple Relationships
+    public static func jsonForResourceUpdateWith(type: String, id: String, attributes: JSONObject, relationships: [JSONObject]? = nil) -> JSONObject {
+        return jsonForResourceWith(type: type, id: id, attributes: attributes, relationships: relationships)
+    }
+    
+    /// Builds a new JSON API resource with a single Relationship
+    public static func jsonForResourceWith(type: String, id: UUID? = nil, attributes: JSONObject? = nil, relationship: JSONObject? = nil) -> JSONObject {
+        
+        return jsonForResourceWith(type: type, id: id?.uuidString, attributes: attributes, relationship: relationship)
+    }
+    
+    /// Builds a new JSON API resource with multiple Relationships
+    public static func jsonForResourceWith(type: String, id: UUID? = nil, attributes: JSONObject? = nil, relationships: [JSONObject]? = nil) -> JSONObject {
+        
+        return jsonForResourceWith(type: type, id: id?.uuidString, attributes: attributes, relationships: relationships)
+    }
+    
+    //MARK: Private
+    
+    private static var includedDataPool = JSONObject()
+    
+    private func initialize() {
+        poolIncludedData()
+    }
+    
+    private func poolIncludedData() {
+        if let includedData = json[Key.included] as? [JSONObject] {
+            pool(includedData)
+        }
     }
     
     /// Adds the resources in data to the includedDataPool if needed
@@ -107,72 +199,63 @@ public struct Treasure {
                         currentPool.append(data)
                         Treasure.includedDataPool[type] = currentPool
                     }
-                
+                    
                 } else {
                     Treasure.includedDataPool[type] = [data]
                 }
             }
         }
     }
-}
-
-public struct Key {
     
-    public static let id = "id"
-    public static let type = "type"
-    public static let data = "data"
-    public static let links = "links"
-    public static let included = "included"
-    public static let meta = "meta"
-    public static let errors = "errors"
-    public static let jsonapi = "jsonapi"
-    public static let first = "first"
-    public static let last = "last"
-    public static let prev = "prev"
-    public static let next = "next"
-    public static let page = "page"
-    public static let self_ = "self"
-    public static let relationship = "relationship"
-    
-    public static func attributes(_ key: String) -> String {
-        return "attributes.\(key)"
+    private static func jsonForResourceWith(type: String, id: String?, attributes: JSONObject?, relationship: JSONObject?) -> JSONObject {
+        
+        var data = Treasure.jsonForResourceDataWith(type: type, id: id, attributes: attributes)
+        
+        addRelationshipToResource(data: &data, relationship: relationship)
+        
+        return [Key.data: data as! JSONObject]
     }
     
-    public static func relationships(_ key: String) -> String {
-        return "relationships.\(key)"
+    private static func jsonForResourceWith(type: String, id: String?, attributes: JSONObject?, relationships: [JSONObject]?) -> JSONObject {
+        
+        var data = Treasure.jsonForResourceDataWith(type: type, id: id, attributes: attributes)
+        
+        addRelationshipsToResource(data: &data, relationships: relationships)
+        
+        return [Key.data: data as! JSONObject]
     }
-}
-
-public struct Errors: Mappable {
     
-    let id: String?
-    let links: JSONObject?
-    let status: String?
-    let code: String?
-    let title: String?
-    let detail: String?
-    let source: JSONObject?
-    let meta: JSONObject?
-    
-    public init(map: Mapper) throws {
-        id = try? map.from(Key.id)
-        links = try? map.from(Key.links)
-        status = try? map.from("status")
-        code = try? map.from("code")
-        title = try? map.from("title")
-        detail = try? map.from("detail")
-        source = try? map.from("source")
-        meta = try? map.from(Key.meta)
+    private static func addRelationshipToResource(data: inout NSMutableDictionary, relationship: JSONObject?) {
+        
+        if let relationship = relationship {
+            data[Key.relationships()] = relationship
+        }
     }
-}
-
-public struct JSONAPI: Mappable {
     
-    let version: String?
-    let meta: JSONObject?
+    private static func addRelationshipsToResource(data: inout NSMutableDictionary, relationships: [JSONObject]?) {
+        
+        if let relationships = relationships {
+            var relationshipsObject = NSMutableDictionary()
+            for relationship in relationships {
+                relationshipsObject.addEntries(from: relationship)
+            }
+            
+            data[Key.relationships()] = relationshipsObject as! JSONObject
+        }
+    }
     
-    public init(map: Mapper) throws {
-        version = try? map.from("version")
-        meta = try? map.from(Key.meta)
+    private static func jsonForResourceDataWith(type: String, id: String? = nil, attributes: JSONObject?) -> NSMutableDictionary {
+        
+        var data: NSMutableDictionary = [Key.type: type]
+        
+        if let id = id {
+            data[Key.id] = id
+        }
+        
+        if let attributes = attributes {
+            data[Key.attributes()] = attributes
+        }
+        
+        return data
     }
 }

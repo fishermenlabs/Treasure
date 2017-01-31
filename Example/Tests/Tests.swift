@@ -81,6 +81,113 @@ class Tests: XCTestCase {
         }
     }
     
+    func testCreateToOne() {
+        
+        let toOneRelationship = ToOneRelationship(data: RelationshipData(type: "users", id: "4")).jsonWith(key: "users")!
+        
+        let project = Treasure.jsonForResourceWith(type: "projects", attributes: ["title": "Test ToOne"], relationship: toOneRelationship)
+        
+        let json: JSONObject = [
+            "data": [
+                "type": "projects",
+                "attributes": [
+                    "title": "Test ToOne"
+                ],
+                "relationships": [
+                    "users": [
+                        "data": ["type": "users", "id": "4"]
+                    ]
+                ]
+            ]
+        ]
+        
+        XCTAssertTrue(project as NSDictionary == json as NSDictionary)
+    }
+    
+    func testCreateToMany() {
+        
+        let pointsData1 = RelationshipData(type: "points", id: "1")
+        let pointsData2 = RelationshipData(type: "points", id: "2")
+        
+        let toManyRelationship = ToManyRelationship.jsonWith(key: "points", data: [pointsData1, pointsData2])
+        
+        let uuid = UUID()
+        
+        let project = Treasure.jsonForResourceWith(type: "projects", id: uuid, attributes: ["title": "Test ToMany"], relationship: toManyRelationship)
+        
+        let json: JSONObject = [
+            "data": [
+                "type": "projects",
+                "id": uuid.uuidString,
+                "attributes": [
+                    "title": "Test ToMany"
+                ],
+                "relationships": [
+                    "points": [
+                        "data": [["type": "points", "id": "1"], ["type": "points", "id": "2"]]
+                    ]
+                ]
+            ]
+        ]
+        
+        XCTAssertTrue(project as NSDictionary == json as NSDictionary)
+    }
+    
+    func testCreateCombo() {
+        
+        let usersData = RelationshipData(type: "users", id: "4")
+        let pointsData1 = RelationshipData(type: "points", id: "1")
+        let pointsData2 = RelationshipData(type: "points", id: "2")
+        
+        let toOneRelationship = ToOneRelationship.jsonWith(key: "users", data: usersData)
+        let toManyRelationship = ToManyRelationship(data: [pointsData1, pointsData2]).jsonWith(key: "points")!
+
+        let project = Treasure.jsonForResourceWith(type: "projects", attributes: ["title": "Test ToMany"], relationships: [toOneRelationship, toManyRelationship])
+        
+        let json: JSONObject = [
+            "data": [
+                "type": "projects",
+                "attributes": [
+                    "title": "Test ToMany"
+                ],
+                "relationships": [
+                    "users": [
+                        "data": ["type": "users", "id": "4"]
+                    ],
+                    "points": [
+                        "data": [["type": "points", "id": "1"], ["type": "points", "id": "2"]]
+                    ]
+                ]
+            ]
+        ]
+        
+        XCTAssertTrue(project as NSDictionary == json as NSDictionary)
+    }
+    
+    func testUpdate() {
+        
+        let toOneRelationship = ToOneRelationship(data: RelationshipData(type: "users", id: "10")).jsonWith(key: "users")!
+        
+        let project = Treasure.jsonForResourceUpdateWith(type: "projects", id: "1", attributes: ["title": "The Best Project"], relationship: toOneRelationship)
+        
+        let json: JSONObject = [
+            "data": [
+                "id": "1",
+                "type": "projects",
+                "attributes": [
+                    "title": "The Best Project"
+                ],
+                "relationships": [
+                    "users": [
+                        "data": ["type": "users", "id": "10"]
+                    ]
+                ]
+            ]
+        ]
+        
+        XCTAssertTrue(project as NSDictionary == json as NSDictionary)
+    }
+    
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure() {
