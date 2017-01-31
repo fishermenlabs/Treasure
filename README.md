@@ -73,7 +73,35 @@ if let json = json as? [String: Any] {
 }
 ```
 
+You can build JSON API resources for update or creation via the `jsonForResourceUpdateWith` and `jsonForResourceWith` static functions.
+
+```swift
+let toOneRelationship = ToOneRelationship.jsonWith(key: "users", data: RelationshipData(type: "users", id: "4"))
+
+let newProject = Treasure.jsonForResourceWith(type: "projects", attributes: ["title": "Test Project"], relationship: toOneRelationship)
+```
+
+The above call will build the following resource, which you can POST to your backend service for creation.
+
+```json
+"data": {
+    "type": "projects",
+    "attributes": {
+        "title": "Test Project"
+    },
+    "relationships": {
+        "users": {
+            "data": {
+                "type": "users",
+                "id": "4"
+            }
+        }
+    }
+}
+```
+
 ## License
 
 Treasure is available under the MIT license. See the LICENSE file for more info.
+
 Lyft's Mapper is available under the Apache 2.0 License
