@@ -213,7 +213,7 @@ public struct Treasure {
         
         addRelationshipToResource(data: &data, relationship: relationship)
         
-        return [Key.data: data as! JSONObject]
+        return [Key.data: data]
     }
     
     private static func jsonForResourceWith(type: String, id: String?, attributes: JSONObject?, relationships: [JSONObject]?) -> JSONObject {
@@ -222,7 +222,7 @@ public struct Treasure {
         
         addRelationshipsToResource(data: &data, relationships: relationships)
         
-        return [Key.data: data as! JSONObject]
+        return [Key.data: data]
     }
     
     private static func addRelationshipToResource(data: inout NSMutableDictionary, relationship: JSONObject?) {
@@ -235,18 +235,18 @@ public struct Treasure {
     private static func addRelationshipsToResource(data: inout NSMutableDictionary, relationships: [JSONObject]?) {
         
         if let relationships = relationships {
-            var relationshipsObject = NSMutableDictionary()
+            let relationshipsObject = NSMutableDictionary()
             for relationship in relationships {
                 relationshipsObject.addEntries(from: relationship)
             }
             
-            data[Key.relationships()] = relationshipsObject as! JSONObject
+            data[Key.relationships()] = relationshipsObject
         }
     }
     
     private static func jsonForResourceDataWith(type: String, id: String? = nil, attributes: JSONObject?) -> NSMutableDictionary {
         
-        var data: NSMutableDictionary = [Key.type: type]
+        let data: NSMutableDictionary = [Key.type: type]
         
         if let id = id {
             data[Key.id] = id
