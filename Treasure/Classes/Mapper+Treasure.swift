@@ -46,7 +46,7 @@ public extension Mapper {
         
         let error = MapperError.customError(field: Key.included, message: "Included data does not exist in pool")
         
-        if let typePool = Treasure.dataPool[relationshipData.type] as? [JSONObject] {
+        if let typePool = Treasure.chest[relationshipData.type] as? [JSONObject] {
             let data = typePool.filter({ (json) -> Bool in
                 if let jsonId = json[Key.id] as? String, jsonId == relationshipData.id {
                     return true

@@ -233,13 +233,28 @@ class Tests: XCTestCase {
         
         let _: Project? = Treasure(json: json).map()
         
-        if let user = Treasure.dataPool["users"] as? [JSONObject] {
+        if let user = Treasure.chest["users"] as? [JSONObject] {
             XCTAssertTrue(user.first! == testUserJson)
         } else {
             XCTFail()
         }
     }
     
+    func testStoreData() {
+        
+        let json = Treasure.chest
+        if let data = Treasure.chestData() {
+            
+            Treasure.clearChest()
+            
+            Treasure.store(data)
+
+            XCTAssertTrue(json == Treasure.chest)
+        } else {
+            XCTFail()
+        }
+    }
+        
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure() {

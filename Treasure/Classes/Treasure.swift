@@ -86,7 +86,7 @@ public struct JSONAPI: Mappable {
 public struct Treasure {
     
     /// The shared data pool of resources for the current lifecycle
-    public static var dataPool: JSONObject {
+    public static var chest: JSONObject {
         return Treasure.privateDataPool
     }
     
@@ -142,8 +142,22 @@ public struct Treasure {
         return try? Mapper(JSON: json).from(Key.data)
     }
     
-    public static func clearDataPool() {
+    public static func clearChest() {
         Treasure.privateDataPool.removeAll()
+    }
+    
+    public static func chestData() -> Data? {
+        return try? JSONSerialization.data(withJSONObject: Treasure.privateDataPool)
+    }
+    
+    public static func store(_ data: Data) {
+        if let json = try? JSONSerialization.jsonObject(with: data), let jsonObject = json as? NSDictionary {
+            for array in jsonObject.allValues {
+                if let array = array as? [JSONObject] {
+                    Treasure.pool(array)
+                }
+            }
+        }
     }
     
     /// Builds a new JSON API resource for updating attributes with an optional single Relationship
@@ -180,18 +194,18 @@ public struct Treasure {
         if let data = json[Key.data] as? JSONObject {
             var mutableJson = data
             mutableJson.removeValue(forKey: Key.included)
-            pool([mutableJson])
+            Treasure.pool([mutableJson])
         }
         
         //Pool included data
         if let includedData = json[Key.included] as? [JSONObject] {
-            pool(includedData)
+            Treasure.pool(includedData)
         }
     }
     
     /// Adds the resources in data to the pool if needed
-    private func pool(_ data: [JSONObject]) {
-        for data in data {
+    private static func pool(_ json: [JSONObject]) {
+        for data in json {
             if let type = data[Key.type] as? String {
                 if let typePool = Treasure.privateDataPool[type] as? [JSONObject] {
                     
@@ -202,7 +216,7 @@ public struct Treasure {
                         return false
                     }) {
                         var currentPool = typePool
-                        let newData = replace(currentPool.remove(at: index), with: data)
+                        let newData = Treasure.replace(currentPool.remove(at: index), with: data)
                         currentPool.insert(newData, at: index)
                         Treasure.privateDataPool[type] = currentPool
                     } else {
@@ -219,7 +233,7 @@ public struct Treasure {
     }
 
     /// Replaces values in the current object in the pool with the new object's values
-    private func replace(_ oldObject: JSONObject, with newObject: JSONObject) -> JSONObject {
+    private static func replace(_ oldObject: JSONObject, with newObject: JSONObject) -> JSONObject {
         
         guard oldObject != newObject else { return newObject }
         
