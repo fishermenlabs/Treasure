@@ -85,9 +85,9 @@ public struct JSONAPI: Mappable {
 
 public struct Treasure {
     
-    /// The shared data pool of included resources for the current lifecycle
+    /// The shared data pool of resources for the current lifecycle
     public static var dataPool: JSONObject {
-        return Treasure.includedDataPool
+        return Treasure.privateDataPool
     }
     
     /// The full json object received on initialization
@@ -143,7 +143,7 @@ public struct Treasure {
     }
     
     public static func clearDataPool() {
-        Treasure.includedDataPool.removeAll()
+        Treasure.privateDataPool.removeAll()
     }
     
     /// Builds a new JSON API resource for updating attributes with an optional single Relationship
@@ -168,23 +168,32 @@ public struct Treasure {
     
     //MARK: Private
     
-    private static var includedDataPool = JSONObject()
+    private static var privateDataPool = JSONObject()
     
     private func initialize() {
-        poolIncludedData()
+        poolData()
     }
     
-    private func poolIncludedData() {
+    private func poolData() {
+        
+        //Pool top-level data
+        if let data = json[Key.data] as? JSONObject {
+            var mutableJson = data
+            mutableJson.removeValue(forKey: Key.included)
+            pool([mutableJson])
+        }
+        
+        //Pool included data
         if let includedData = json[Key.included] as? [JSONObject] {
             pool(includedData)
         }
     }
     
-    /// Adds the resources in data to the includedDataPool if needed
+    /// Adds the resources in data to the pool if needed
     private func pool(_ data: [JSONObject]) {
         for data in data {
             if let type = data[Key.type] as? String {
-                if let typePool = Treasure.includedDataPool[type] as? [JSONObject] {
+                if let typePool = Treasure.privateDataPool[type] as? [JSONObject] {
                     
                     if let index = typePool.index(where: { (typeData) -> Bool in
                         if let lhs = typeData[Key.id] as? String, let rhs = data[Key.id] as? String {
@@ -195,15 +204,15 @@ public struct Treasure {
                         var currentPool = typePool
                         let newData = replace(currentPool.remove(at: index), with: data)
                         currentPool.insert(newData, at: index)
-                        Treasure.includedDataPool[type] = currentPool
+                        Treasure.privateDataPool[type] = currentPool
                     } else {
                         var currentPool = typePool
                         currentPool.append(data)
-                        Treasure.includedDataPool[type] = currentPool
+                        Treasure.privateDataPool[type] = currentPool
                     }
                     
                 } else {
-                    Treasure.includedDataPool[type] = [data]
+                    Treasure.privateDataPool[type] = [data]
                 }
             }
         }

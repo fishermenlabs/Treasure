@@ -234,7 +234,6 @@ class Tests: XCTestCase {
         let _: Project? = Treasure(json: json).map()
         
         if let user = Treasure.dataPool["users"] as? [JSONObject] {
-            print(Treasure.dataPool)
             XCTAssertTrue(user.first! == testUserJson)
         } else {
             XCTFail()
