@@ -27,6 +27,9 @@ public struct Key {
     public static let next = "next"
     public static let page = "page"
     public static let self_ = "self"
+    public static let collection = "collection"
+    public static let href = "href"
+    public static let related = "related"
     public static let relationship = "relationship"
     
     public static func attributes(_ key: String? = nil) -> String {
@@ -155,13 +158,11 @@ public struct Treasure {
     
     /// Builds a new JSON API resource with a single Relationship
     public static func jsonForResourceWith(type: String, id: UUID? = nil, attributes: JSONObject? = nil, relationship: JSONObject? = nil) -> JSONObject {
-        
         return jsonForResourceWith(type: type, id: id?.uuidString, attributes: attributes, relationship: relationship)
     }
     
     /// Builds a new JSON API resource with multiple Relationships
     public static func jsonForResourceWith(type: String, id: UUID? = nil, attributes: JSONObject? = nil, relationships: [JSONObject]? = nil) -> JSONObject {
-        
         return jsonForResourceWith(type: type, id: id?.uuidString, attributes: attributes, relationships: relationships)
     }
     
@@ -192,8 +193,9 @@ public struct Treasure {
                         return false
                     }) {
                         var currentPool = typePool
-                        currentPool.remove(at: index)
-                        currentPool.insert(data, at: index)
+                        let newData = replace(currentPool.remove(at: index), with: data)
+                        currentPool.insert(newData, at: index)
+                        Treasure.includedDataPool[type] = currentPool
                     } else {
                         var currentPool = typePool
                         currentPool.append(data)
@@ -205,6 +207,37 @@ public struct Treasure {
                 }
             }
         }
+    }
+
+    /// Replaces values in the current object in the pool with the new object's values
+    private func replace(_ oldObject: JSONObject, with newObject: JSONObject) -> JSONObject {
+        
+        guard oldObject != newObject else { return newObject }
+        
+        if let oldAttributes = oldObject[Key.attributes()] as? JSONObject,
+            let newAttributes = newObject[Key.attributes()] as? JSONObject {
+            
+            guard oldAttributes != newAttributes else {
+                return newObject
+            }
+            
+            var oldMutable = oldObject
+            var oldMutableAttributes = oldAttributes
+
+            guard oldAttributes.count < newAttributes.count else {
+                
+                for key in (newAttributes as NSDictionary).allKeys {
+                    let key = key as! String
+                    oldMutableAttributes[key] = newAttributes[key]
+                }
+                
+                oldMutable[Key.attributes()] = oldMutableAttributes
+
+                return oldMutable
+            }
+        }
+        
+        return newObject
     }
     
     private static func jsonForResourceWith(type: String, id: String?, attributes: JSONObject?, relationship: JSONObject?) -> JSONObject {
@@ -258,4 +291,8 @@ public struct Treasure {
         
         return data
     }
+}
+
+fileprivate func != <Key, Value>(left: [Key: Value], right: [Key: Value]) -> Bool {
+    return !NSDictionary(dictionary: left).isEqual(to: right)
 }

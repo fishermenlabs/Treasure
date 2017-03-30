@@ -3,7 +3,43 @@ import XCTest
 import Treasure
 import Mapper
 
+fileprivate func == <K, V>(left: [K:V], right: [K:V]) -> Bool {
+    return NSDictionary(dictionary: left).isEqual(to: right)
+}
+
 class Tests: XCTestCase {
+    
+    struct User: Resource {
+        
+        let id: String
+        let type: String
+        let name: String
+        let description: String
+        
+        init(map: Mapper) throws {
+            id = try map.from(Key.id)
+            type = try map.from(Key.type)
+            name = try map.from(Key.attributes("name"))
+            description = try map.from(Key.attributes("description"))
+        }
+    }
+    
+    struct Project: Resource {
+        
+        let id: String
+        let type: String
+        let title: String
+        let manager: User?
+        
+        init(map: Mapper) throws {
+            id = try map.from(Key.id)
+            type = try map.from(Key.type)
+            title = try map.from(Key.attributes("title"))
+            
+            let managerRelationship: ToOneRelationship? = try? map.from(Key.relationships("users"))
+            manager = try? map.from(managerRelationship)
+        }
+    }
     
     override func setUp() {
         super.setUp()
@@ -17,41 +53,12 @@ class Tests: XCTestCase {
     
     func testExample() {
         
-        struct User: Resource {
-            
-            let id: String
-            let type: String
-            let name: String
-            
-            init(map: Mapper) throws {
-                id = try map.from(Key.id)
-                type = try map.from(Key.type)
-                name = try map.from(Key.attributes("name"))
-            }
-        }
-        
-        struct Project: Resource {
-            
-            let id: String
-            let type: String
-            let title: String
-            let manager: User?
-            
-            init(map: Mapper) throws {
-                id = try map.from(Key.id)
-                type = try map.from(Key.type)
-                title = try map.from(Key.attributes("title"))
-                
-                let managerRelationship: ToOneRelationship? = try? map.from(Key.relationships("users"))
-                manager = try? map.from(managerRelationship)
-            }
-        }
-        
         let userJson: JSONObject = [
             "id": "4",
             "type": "users",
             "attributes": [
-                "name": "Test User"
+                "name": "Test User",
+                "description": "The best test user ever"
             ]
         ]
         
@@ -186,6 +193,52 @@ class Tests: XCTestCase {
         ]
         
         XCTAssertTrue(project as NSDictionary == json as NSDictionary)
+    }
+    
+    func testReplace() {
+        
+        let userJson: JSONObject = [
+            "id": "4",
+            "type": "users",
+            "attributes": [
+                "name": "New Name"
+            ]
+        ]
+        
+        let testUserJson: JSONObject = [
+            "id": "4",
+            "type": "users",
+            "attributes": [
+                "name": "New Name",
+                "description": "The best test user ever"
+            ]
+        ]
+        
+        let json: JSONObject = [
+            "data": [
+                "id": "1",
+                "type": "projects",
+                "attributes": [
+                    "title": "Test Project"
+                ],
+                "relationships": [
+                    "users": [
+                        "data": ["type": "users", "id": "4"]
+                    ]
+                ]
+            ],
+            "included": [userJson]
+        ]
+        
+        
+        let _: Project? = Treasure(json: json).map()
+        
+        if let user = Treasure.dataPool["users"] as? [JSONObject] {
+            print(Treasure.dataPool)
+            XCTAssertTrue(user.first! == testUserJson)
+        } else {
+            XCTFail()
+        }
     }
     
     func testPerformanceExample() {
