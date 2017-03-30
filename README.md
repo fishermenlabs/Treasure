@@ -100,6 +100,8 @@ The above call will build the following resource, which you can POST to your bac
 }
 ```
 
+If you would like to persist the data pool, you can retrieve it as `Data` by using `Treasure.chestData()`, and store it back using `Treasure.store(data: Data)`
+
 ## License
 
 Treasure is available under the MIT license. See the LICENSE file for more info.
