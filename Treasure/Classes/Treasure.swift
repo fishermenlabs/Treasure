@@ -205,6 +205,7 @@ public struct Treasure {
     
     /// Adds the resources in data to the pool if needed
     private static func pool(_ json: [JSONObject]) {
+        
         for data in json {
             if let type = data[Key.type] as? String {
                 if let typePool = Treasure.privateDataPool[type] as? [JSONObject] {
@@ -236,31 +237,44 @@ public struct Treasure {
     private static func replace(_ oldObject: JSONObject, with newObject: JSONObject) -> JSONObject {
         
         guard oldObject != newObject else { return newObject }
+    
+        let withAttributes = Treasure.replaceValuesIn(oldObject, with: newObject, for: Key.attributes())
+        return Treasure.replaceValuesIn(withAttributes, with: newObject, for: Key.relationships())
+    }
+    
+    private static func replaceValuesIn(_ oldObject: JSONObject, with newObject: JSONObject, for key: String) -> JSONObject {
         
-        if let oldAttributes = oldObject[Key.attributes()] as? JSONObject,
-            let newAttributes = newObject[Key.attributes()] as? JSONObject {
+        if let oldValues = oldObject[key] as? JSONObject {
             
-            guard oldAttributes != newAttributes else {
-                return newObject
-            }
-            
-            var oldMutable = oldObject
-            var oldMutableAttributes = oldAttributes
-
-            guard oldAttributes.count < newAttributes.count else {
+            if let newValues = newObject[key] as? JSONObject {
                 
-                for key in (newAttributes as NSDictionary).allKeys {
-                    let key = key as! String
-                    oldMutableAttributes[key] = newAttributes[key]
+                guard oldValues != newValues else {
+                    return newObject
                 }
                 
-                oldMutable[Key.attributes()] = oldMutableAttributes
-
+                var oldMutable = oldObject
+                var oldMutableValues = oldValues
+                
+                for key in (newValues as NSDictionary).allKeys {
+                    let key = key as! String
+                    oldMutableValues[key] = newValues[key]
+                }
+                
+                oldMutable[key] = oldMutableValues
+                
                 return oldMutable
+            } else {
+                return oldObject
             }
+        } else if let newValues = newObject[key] as? JSONObject {
+            
+            var oldMutable = oldObject
+            
+            oldMutable[key] = newValues
+            return oldMutable
         }
         
-        return newObject
+        return oldObject
     }
     
     private static func jsonForResourceWith(type: String, id: String?, attributes: JSONObject?, relationship: JSONObject?) -> JSONObject {

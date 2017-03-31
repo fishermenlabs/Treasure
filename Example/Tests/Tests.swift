@@ -202,6 +202,11 @@ class Tests: XCTestCase {
             "type": "users",
             "attributes": [
                 "name": "New Name"
+            ],
+            "relationships": [
+                "projects": [
+                    "data": ["type": "projects", "id": "1"]
+                ]
             ]
         ]
         
@@ -211,6 +216,11 @@ class Tests: XCTestCase {
             "attributes": [
                 "name": "New Name",
                 "description": "The best test user ever"
+            ],
+            "relationships": [
+                "projects": [
+                    "data": ["type": "projects", "id": "1"]
+                ]
             ]
         ]
         
