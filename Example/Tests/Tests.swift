@@ -41,19 +41,9 @@ class Tests: XCTestCase {
         }
     }
     
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testExample() {
+    struct TestJson {
         
-        let userJson: JSONObject = [
+        static let userJson: JSONObject = [
             "id": "4",
             "type": "users",
             "attributes": [
@@ -62,7 +52,7 @@ class Tests: XCTestCase {
             ]
         ]
         
-        let json: JSONObject = [
+        static let projectJson: JSONObject = [
             "data": [
                 "id": "1",
                 "type": "projects",
@@ -78,80 +68,22 @@ class Tests: XCTestCase {
             "included": [userJson]
         ]
         
-        let testProject: Project? = Treasure(json: json).map()
-        let testUser: User? = User.from(userJson)
-        
-        if let manager = testProject?.manager, let user = testUser {
-            XCTAssertTrue(manager == user)
-        } else {
-            XCTFail()
-        }
-    }
-    
-    func testCreateToOne() {
-        
-        let toOneRelationship = ToOneRelationship(data: RelationshipData(type: "users", id: "4")).jsonWith(key: "users")!
-        
-        let project = Treasure.jsonForResourceWith(type: "projects", attributes: ["title": "Test ToOne"], relationship: toOneRelationship)
-        
-        let json: JSONObject = [
+        static let projectJsonUpdated: JSONObject = [
             "data": [
+                "id": "1",
                 "type": "projects",
                 "attributes": [
-                    "title": "Test ToOne"
+                    "title": "The Best Project"
                 ],
                 "relationships": [
                     "users": [
-                        "data": ["type": "users", "id": "4"]
+                        "data": ["type": "users", "id": "10"]
                     ]
                 ]
             ]
         ]
         
-        XCTAssertTrue(project as NSDictionary == json as NSDictionary)
-    }
-    
-    func testCreateToMany() {
-        
-        let pointsData1 = RelationshipData(type: "points", id: "1")
-        let pointsData2 = RelationshipData(type: "points", id: "2")
-        
-        let toManyRelationship = ToManyRelationship.jsonWith(key: "points", data: [pointsData1, pointsData2])
-        
-        let uuid = UUID()
-        
-        let project = Treasure.jsonForResourceWith(type: "projects", id: uuid, attributes: ["title": "Test ToMany"], relationship: toManyRelationship)
-        
-        let json: JSONObject = [
-            "data": [
-                "type": "projects",
-                "id": uuid.uuidString,
-                "attributes": [
-                    "title": "Test ToMany"
-                ],
-                "relationships": [
-                    "points": [
-                        "data": [["type": "points", "id": "1"], ["type": "points", "id": "2"]]
-                    ]
-                ]
-            ]
-        ]
-        
-        XCTAssertTrue(project as NSDictionary == json as NSDictionary)
-    }
-    
-    func testCreateCombo() {
-        
-        let usersData = RelationshipData(type: "users", id: "4")
-        let pointsData1 = RelationshipData(type: "points", id: "1")
-        let pointsData2 = RelationshipData(type: "points", id: "2")
-        
-        let toOneRelationship = ToOneRelationship.jsonWith(key: "users", data: usersData)
-        let toManyRelationship = ToManyRelationship(data: [pointsData1, pointsData2]).jsonWith(key: "points")!
-
-        let project = Treasure.jsonForResourceWith(type: "projects", attributes: ["title": "Test ToMany"], relationships: [toOneRelationship, toManyRelationship])
-        
-        let json: JSONObject = [
+       static let projectJsonManyRelationships: JSONObject = [
             "data": [
                 "type": "projects",
                 "attributes": [
@@ -168,31 +100,107 @@ class Tests: XCTestCase {
             ]
         ]
         
-        XCTAssertTrue(project as NSDictionary == json as NSDictionary)
+        static func projectPointsJson(id: UUID) -> JSONObject {
+            return ["data": [
+                        "type": "projects",
+                        "id": id.uuidString,
+                        "attributes": [
+                            "title": "Test ToMany"
+                        ],
+                        "relationships": [
+                            "points": [
+                                "data": [["type": "points", "id": "1"], ["type": "points", "id": "2"]]
+                            ]
+                        ]
+                    ]
+                ]
+        }
+
     }
     
-    func testUpdate() {
+    override func setUp() {
+        super.setUp()
+    }
+    
+    override func tearDown() {
         
-        let toOneRelationship = ToOneRelationship(data: RelationshipData(type: "users", id: "10")).jsonWith(key: "users")!
+        Treasure.clearChest()
         
-        let project = Treasure.jsonForResourceUpdateWith(type: "projects", id: "1", attributes: ["title": "The Best Project"], relationship: toOneRelationship)
+        super.tearDown()
+    }
+    
+    func testExample() {
         
-        let json: JSONObject = [
+        let testProject: Project? = Treasure(json: TestJson.projectJson).map()
+        let testUser: User? = User.from(TestJson.userJson)
+        
+        if let manager = testProject?.manager, let user = testUser {
+            XCTAssertTrue(manager == user)
+        } else {
+            XCTFail()
+        }
+    }
+    
+    func testCreateToOne() {
+        
+        let toOneRelationship = ToOneRelationship(data: RelationshipData(type: "users", id: "4")).jsonWith(key: "users")!
+        
+        let project = Treasure.jsonForResourceWith(type: "projects", attributes: ["title": "Test Project"], relationship: toOneRelationship)
+        
+        let testJson = [
             "data": [
-                "id": "1",
                 "type": "projects",
                 "attributes": [
-                    "title": "The Best Project"
+                    "title": "Test Project"
                 ],
                 "relationships": [
                     "users": [
-                        "data": ["type": "users", "id": "10"]
+                        "data": ["type": "users", "id": "4"]
                     ]
                 ]
             ]
         ]
         
-        XCTAssertTrue(project as NSDictionary == json as NSDictionary)
+        XCTAssertTrue(project as NSDictionary == testJson as NSDictionary)
+    }
+    
+    func testCreateToMany() {
+        
+        let pointsData1 = RelationshipData(type: "points", id: "1")
+        let pointsData2 = RelationshipData(type: "points", id: "2")
+        
+        let toManyRelationship = ToManyRelationship.jsonWith(key: "points", data: [pointsData1, pointsData2])
+        
+        let uuid = UUID()
+        
+        let project = Treasure.jsonForResourceWith(type: "projects", id: uuid, attributes: ["title": "Test ToMany"], relationship: toManyRelationship)
+        
+        XCTAssertTrue(project as NSDictionary == TestJson.projectPointsJson(id: uuid) as NSDictionary)
+    }
+    
+    func testCreateCombo() {
+        
+        let usersData = RelationshipData(type: "users", id: "4")
+        let pointsData1 = RelationshipData(type: "points", id: "1")
+        let pointsData2 = RelationshipData(type: "points", id: "2")
+        
+        let toOneRelationship = ToOneRelationship.jsonWith(key: "users", data: usersData)
+        let toManyRelationship = ToManyRelationship(data: [pointsData1, pointsData2]).jsonWith(key: "points")!
+
+        let project = Treasure.jsonForResourceWith(type: "projects", attributes: ["title": "Test ToMany"], relationships: [toOneRelationship, toManyRelationship])
+        
+        XCTAssertTrue(project as NSDictionary == TestJson.projectJsonManyRelationships as NSDictionary)
+    }
+    
+    func testUpdate() {
+        
+        let _: Project? = Treasure(json: TestJson.projectJson).map()
+        
+        let toOneRelationship = ToOneRelationship(data: RelationshipData(type: "users", id: "10")).jsonWith(key: "users")!
+        
+        let project = Treasure.jsonForResourceUpdateWith(type: "projects", id: "1", attributes: ["title": "The Best Project"], relationship: toOneRelationship)
+        
+        XCTAssertTrue(project as NSDictionary == TestJson.projectJsonUpdated as NSDictionary)
     }
     
     func testReplace() {
@@ -240,7 +248,7 @@ class Tests: XCTestCase {
             "included": [userJson]
         ]
         
-        
+        let _: Project? = Treasure(json: TestJson.projectJson).map()
         let _: Project? = Treasure(json: json).map()
         
         if let user = Treasure.chest["users"] as? [JSONObject] {
@@ -251,6 +259,9 @@ class Tests: XCTestCase {
     }
     
     func testStoreData() {
+        
+        let _: Project? = Treasure(json: TestJson.projectJson).map()
+        let _: User? = Treasure(json: TestJson.userJson).map()
         
         let json = Treasure.chest
         if let data = Treasure.chestData() {
@@ -264,11 +275,19 @@ class Tests: XCTestCase {
             XCTFail()
         }
     }
+    
+    func testResourceFromRelationship() {
         
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure() {
-            // Put the code you want to measure the time of here.
+        let project: Project? = Treasure(json: TestJson.projectJson).map()
+        
+        let relationship: ToOneRelationship = ToOneRelationship(data: RelationshipData(type: "users", id: "4"))
+        
+        let user: User? = try? Treasure.resourceFor(relationship: relationship)
+        
+        if let user = user, let manager = project?.manager {
+            XCTAssert(manager == user)
+        } else {
+            XCTFail()
         }
     }
     

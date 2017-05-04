@@ -180,6 +180,26 @@ public struct Treasure {
         return jsonForResourceWith(type: type, id: id?.uuidString, attributes: attributes, relationships: relationships)
     }
     
+    /// Retrieves a Resource from the chest for the given type and id
+    public static func resourceFor<T: Resource>(type: String, id: String) throws -> T {
+        return try Treasure.resourceFor(relationshipData: RelationshipData(type: type, id: id))
+    }
+    
+    /// Retrieves a Resource from the chest for the given ToOneRelationship
+    public static func resourceFor<T: Resource>(relationship: ToOneRelationship?) throws -> T {
+        guard relationship?.data != nil else { throw MapperError.customError(field: Key.data, message: "Relationship data is nil") }
+        return try Treasure.resourceFor(relationshipData: relationship!.data!)
+    }
+    
+    /// Retrieves a Resource from the chest for the given ToManyRelationship
+    public static func resourceFor<T: Resource>(relationship: ToManyRelationship?) throws -> [T] {
+        guard relationship?.data != nil else { throw MapperError.customError(field: Key.data, message: "Relationship data is nil") }
+        
+        return try relationship!.data!.map({ (data) -> T in
+            try Treasure.resourceFor(relationshipData: data)
+        })
+    }
+    
     //MARK: Private
     
     private static var privateDataPool = JSONObject()
@@ -227,7 +247,7 @@ public struct Treasure {
                     }
                     
                 } else {
-                    Treasure.privateDataPool[type] = [data]
+                    Treasure.privateDataPool[type] = [data] 
                 }
             }
         }
@@ -327,6 +347,30 @@ public struct Treasure {
         }
         
         return data
+    }
+    
+    /// Finds, if possible, the data resource for the given relationship type and id
+    private static func resourceFor<T: Mappable>(relationshipData: RelationshipData) throws -> T {
+        
+        let error = MapperError.customError(field: Key.included, message: "Included data does not exist in pool")
+        
+        if let typePool = Treasure.chest[relationshipData.type] as? [JSONObject] {
+            let data = typePool.filter({ (json) -> Bool in
+                if let jsonId = json[Key.id] as? String, jsonId == relationshipData.id {
+                    return true
+                }
+                
+                return false
+            })
+            
+            guard data.first != nil else {
+                throw error
+            }
+            
+            return try Mapper(JSON: data.first!).from("")
+        }
+        
+        throw error
     }
 }
 
