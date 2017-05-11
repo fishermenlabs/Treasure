@@ -212,9 +212,9 @@ public struct Treasure {
         
         //Pool top-level data
         if let data = json[Key.data] as? JSONObject {
-            var mutableJson = data
-            mutableJson.removeValue(forKey: Key.included)
-            Treasure.pool([mutableJson])
+            Treasure.pool([data])
+        } else if let data = json[Key.data] as? [JSONObject] {
+            Treasure.pool(data)
         }
         
         //Pool included data
