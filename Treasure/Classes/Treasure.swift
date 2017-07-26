@@ -87,7 +87,13 @@ public struct Treasure {
     
     /// The shared data pool of resources for the current lifecycle
     public static var chest: JSONObject {
-        return Treasure.privateDataPool
+        var poolCopy: JSONObject!
+        
+        Treasure.concurrentPoolQueue.sync {
+            poolCopy = Treasure.privateDataPool
+        }
+        
+        return poolCopy
     }
     
     /// The full json object received on initialization
@@ -143,11 +149,13 @@ public struct Treasure {
     }
     
     public static func clearChest() {
-        Treasure.privateDataPool.removeAll()
+        Treasure.concurrentPoolQueue.async(flags: .barrier) {
+            Treasure.privateDataPool.removeAll()
+        }
     }
     
     public static func chestData() -> Data? {
-        return try? JSONSerialization.data(withJSONObject: Treasure.privateDataPool)
+        return try? JSONSerialization.data(withJSONObject: Treasure.chest)
     }
     
     public static func store(_ data: Data) {
@@ -204,21 +212,22 @@ public struct Treasure {
     
     private static var privateDataPool = JSONObject()
     
+    private static let concurrentPoolQueue = DispatchQueue(label: "com.treasure.poolQueue", attributes: .concurrent)
+    
     private func initialize() {
         poolData()
     }
     
     private func poolData() {
-        
         //Pool top-level data
-        if let data = json[Key.data] as? JSONObject {
+        if let data = self.json[Key.data] as? JSONObject {
             Treasure.pool([data])
-        } else if let data = json[Key.data] as? [JSONObject] {
+        } else if let data = self.json[Key.data] as? [JSONObject] {
             Treasure.pool(data)
         }
-        
+            
         //Pool included data
-        if let includedData = json[Key.included] as? [JSONObject] {
+        if let includedData = self.json[Key.included] as? [JSONObject] {
             Treasure.pool(includedData)
         }
     }
@@ -226,28 +235,30 @@ public struct Treasure {
     /// Adds the resources in data to the pool if needed
     private static func pool(_ json: [JSONObject]) {
         
-        for data in json {
-            if let type = data[Key.type] as? String {
-                if let typePool = Treasure.privateDataPool[type] as? [JSONObject] {
-                    
-                    if let index = typePool.index(where: { (typeData) -> Bool in
-                        if let lhs = typeData[Key.id] as? String, let rhs = data[Key.id] as? String {
-                            return lhs == rhs
+        Treasure.concurrentPoolQueue.async(flags: .barrier) {
+            for data in json {
+                if let type = data[Key.type] as? String {
+                    if let typePool = Treasure.privateDataPool[type] as? [JSONObject] {
+                        
+                        if let index = typePool.index(where: { (typeData) -> Bool in
+                            if let lhs = typeData[Key.id] as? String, let rhs = data[Key.id] as? String {
+                                return lhs == rhs
+                            }
+                            return false
+                        }) {
+                            var currentPool = typePool
+                            let newData = Treasure.replace(currentPool.remove(at: index), with: data)
+                            currentPool.insert(newData, at: index)
+                            Treasure.privateDataPool[type] = currentPool
+                        } else {
+                            var currentPool = typePool
+                            currentPool.append(data)
+                            Treasure.privateDataPool[type] = currentPool
                         }
-                        return false
-                    }) {
-                        var currentPool = typePool
-                        let newData = Treasure.replace(currentPool.remove(at: index), with: data)
-                        currentPool.insert(newData, at: index)
-                        Treasure.privateDataPool[type] = currentPool
+                        
                     } else {
-                        var currentPool = typePool
-                        currentPool.append(data)
-                        Treasure.privateDataPool[type] = currentPool
+                        Treasure.privateDataPool[type] = [data]
                     }
-                    
-                } else {
-                    Treasure.privateDataPool[type] = [data] 
                 }
             }
         }
