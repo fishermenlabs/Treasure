@@ -11,76 +11,8 @@ import Mapper
 
 public typealias JSONObject = [String: Any]
 
-public struct Key {
-    
-    public static let id = "id"
-    public static let type = "type"
-    public static let data = "data"
-    public static let links = "links"
-    public static let included = "included"
-    public static let meta = "meta"
-    public static let errors = "errors"
-    public static let jsonapi = "jsonapi"
-    public static let first = "first"
-    public static let last = "last"
-    public static let prev = "prev"
-    public static let next = "next"
-    public static let page = "page"
-    public static let self_ = "self"
-    public static let collection = "collection"
-    public static let href = "href"
-    public static let related = "related"
-    public static let relationship = "relationship"
-    
-    public static func attributes(_ key: String? = nil) -> String {
-        guard key?.isEmpty == false else {
-            return "attributes"
-        }
-        
-        return "attributes.\(key!)"
-    }
-    
-    public static func relationships(_ key: String? = nil) -> String {
-        guard key?.isEmpty == false else {
-            return "relationships"
-        }
-        
-        return "relationships.\(key!)"
-    }
-}
-
-public struct Errors: Mappable {
-    
-    let id: String?
-    let links: JSONObject?
-    let status: String?
-    let code: String?
-    let title: String?
-    let detail: String?
-    let source: JSONObject?
-    let meta: JSONObject?
-    
-    public init(map: Mapper) throws {
-        id = try? map.from(Key.id)
-        links = try? map.from(Key.links)
-        status = try? map.from("status")
-        code = try? map.from("code")
-        title = try? map.from("title")
-        detail = try? map.from("detail")
-        source = try? map.from("source")
-        meta = try? map.from(Key.meta)
-    }
-}
-
-public struct JSONAPI: Mappable {
-    
-    let version: String?
-    let meta: JSONObject?
-    
-    public init(map: Mapper) throws {
-        version = try? map.from("version")
-        meta = try? map.from(Key.meta)
-    }
+fileprivate func != <Key, Value>(left: [Key: Value], right: [Key: Value]) -> Bool {
+    return !NSDictionary(dictionary: left).isEqual(to: right)
 }
 
 public struct Treasure {
@@ -383,8 +315,4 @@ public struct Treasure {
         
         throw error
     }
-}
-
-fileprivate func != <Key, Value>(left: [Key: Value], right: [Key: Value]) -> Bool {
-    return !NSDictionary(dictionary: left).isEqual(to: right)
 }
