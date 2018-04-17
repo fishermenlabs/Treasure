@@ -1,19 +1,23 @@
 PODS:
-  - ModelMapper (7.3.0)
+  - ModelMapper (8.0.0)
   - Treasure (0.1.5):
-    - ModelMapper (~> 7.3.0)
+    - ModelMapper (~> 8.0.0)
 
 DEPENDENCIES:
   - Treasure (from `../`)
 
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - ModelMapper
+
 EXTERNAL SOURCES:
   Treasure:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
-  ModelMapper: b70d373f224fc8cfc4da67b483db163a6cd05fe6
-  Treasure: 08e9c57bd3f4c5a837f88e558b81ab3382dac60f
+  ModelMapper: a258c5f8e1422e0e826c8265a3e89ae1b329c3a6
+  Treasure: 8724be73ccac2fe357d8b76b8085f455be10f7bc
 
 PODFILE CHECKSUM: 6bd0fb4d78752947dafe91beeb3f71dc5f170023
 
-COCOAPODS: 1.4.0.beta.2
+COCOAPODS: 1.5.0

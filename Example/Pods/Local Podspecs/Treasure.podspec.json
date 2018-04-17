@@ -24,7 +24,7 @@
   "source_files": "Treasure/Classes/**/*",
   "dependencies": {
     "ModelMapper": [
-      "~> 7.3.0"
+      "~> 8.0.0"
     ]
   }
 }
