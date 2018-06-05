@@ -142,11 +142,6 @@ class Tests: XCTestCase {
         let _: Project? = Treasure(json: json).map()
         
         if let user = Treasure.chest["users"] as? [JSONObject] {
-            
-            print(":::::::::::::::::::")
-            print(user.first!)
-            print("--------------")
-            print(testUserJson)
             XCTAssertTrue(user.first! == testUserJson)
         } else {
             XCTFail()
