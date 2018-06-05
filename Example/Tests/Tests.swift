@@ -1,7 +1,6 @@
 import UIKit
 import XCTest
 import Treasure
-import Mapper
 
 fileprivate func == <K, V>(left: [K:V], right: [K:V]) -> Bool {
     return NSDictionary(dictionary: left).isEqual(to: right)
@@ -143,6 +142,11 @@ class Tests: XCTestCase {
         let _: Project? = Treasure(json: json).map()
         
         if let user = Treasure.chest["users"] as? [JSONObject] {
+            
+            print(":::::::::::::::::::")
+            print(user.first!)
+            print("--------------")
+            print(testUserJson)
             XCTAssertTrue(user.first! == testUserJson)
         } else {
             XCTFail()
@@ -181,5 +185,4 @@ class Tests: XCTestCase {
             XCTFail()
         }
     }
-    
 }

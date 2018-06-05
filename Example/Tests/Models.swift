@@ -8,7 +8,6 @@
 
 import Foundation
 import Treasure
-import Mapper
 
 struct User: Resource {
     
@@ -17,7 +16,7 @@ struct User: Resource {
     let name: String
     let description: String
     
-    init(map: Mapper) throws {
+    init(map: TreasureMapper) throws {
         id = try map.from(Key.id)
         type = try map.from(Key.type)
         name = try map.from(Key.attributes("name"))
@@ -32,7 +31,7 @@ struct Project: Resource {
     let title: String
     let manager: User?
     
-    init(map: Mapper) throws {
+    init(map: TreasureMapper) throws {
         id = try map.from(Key.id)
         type = try map.from(Key.type)
         title = try map.from(Key.attributes("title"))
@@ -116,5 +115,4 @@ struct TestJson {
             ]
         ]
     }
-    
 }

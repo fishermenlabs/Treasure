@@ -3,14 +3,12 @@
 //  Treasure
 //
 //  Created by Kevin Weber on 12/21/16.
-//  Copyright © 2016 Fishermen Labs. All rights reserved.
-//
+//  Copyright © 2018 Fishermen Labs. All rights reserved.
 //
 
 import Foundation
-import Mapper
 
-public protocol Relationship: Mappable {
+public protocol Relationship: TreasureMappable {
     
     var links: JSONObject? {get}
 }
@@ -20,7 +18,7 @@ public struct ToOneRelationship: Relationship {
     public let data: RelationshipData?
     public var links: JSONObject?
     
-    public init(map: Mapper) throws {
+    public init(map: TreasureMapper) throws {
         data = try? map.from(Key.data)
         links = try? map.from(Key.links)
     }
@@ -46,7 +44,7 @@ public struct ToManyRelationship: Relationship {
     public let data: [RelationshipData]?
     public var links: JSONObject?
     
-    public init(map: Mapper) throws {
+    public init(map: TreasureMapper) throws {
         data = try? map.from(Key.data)
         links = try? map.from(Key.links)
     }
@@ -76,7 +74,7 @@ public struct RelationshipData: Resource {
         return [Key.type: type, Key.id: id]
     }
     
-    public init(map: Mapper) throws {
+    public init(map: TreasureMapper) throws {
         type = try map.from(Key.type)
         id = try map.from(Key.id)
     }

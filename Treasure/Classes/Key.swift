@@ -1,8 +1,9 @@
 //
 //  Key.swift
-//  ModelMapper
+//  Treasure
 //
 //  Created by Kevin Weber on 11/6/17.
+//  Copyright © 2018 Fishermen Labs. All rights reserved.
 //
 
 import Foundation

@@ -53,11 +53,9 @@ public struct Treasure {
     
     /// Returns the links objects within the included object under the 'links' key according to the JSON API specification
     public var includedLinks: JSONObject? {
-        if let included = json[Key.included] as? JSONObject {
-            return included[Key.links] as? JSONObject
-        }
+        guard let included = json[Key.included] as? JSONObject else { return nil }
         
-        return nil
+        return included[Key.links] as? JSONObject
     }
     
     public init(json: JSONObject) {
@@ -91,12 +89,11 @@ public struct Treasure {
     }
     
     public static func store(_ data: Data) {
-        if let json = try? JSONSerialization.jsonObject(with: data), let jsonObject = json as? NSDictionary {
-            for array in jsonObject.allValues {
-                if let array = array as? [JSONObject] {
-                    Treasure.pool(array)
-                }
-            }
+        guard let json = try? JSONSerialization.jsonObject(with: data), let jsonObject = json as? NSDictionary else { return }
+        for array in jsonObject.allValues {
+            guard let array = array as? [JSONObject] else { continue }
+            
+            Treasure.pool(array)
         }
     }
     
@@ -169,29 +166,27 @@ public struct Treasure {
         
         Treasure.concurrentPoolQueue.async(flags: .barrier) {
             for data in json {
-                if let type = data[Key.type] as? String {
-                    if let typePool = Treasure.privateDataPool[type] as? [JSONObject] {
-                        
-                        if let index = typePool.index(where: { (typeData) -> Bool in
-                            if let lhs = typeData[Key.id] as? String, let rhs = data[Key.id] as? String {
-                                return lhs == rhs
-                            }
-                            return false
-                        }) {
-                            var currentPool = typePool
-                            let newData = Treasure.replace(currentPool.remove(at: index), with: data)
-                            currentPool.insert(newData, at: index)
-                            Treasure.privateDataPool[type] = currentPool
-                        } else {
-                            var currentPool = typePool
-                            currentPool.append(data)
-                            Treasure.privateDataPool[type] = currentPool
-                        }
-                        
-                    } else {
-                        Treasure.privateDataPool[type] = [data]
-                    }
+                guard let type = data[Key.type] as? String else { continue }
+                
+                guard let typePool = Treasure.privateDataPool[type] as? [JSONObject] else {
+                    Treasure.privateDataPool[type] = [data]
+                    continue
                 }
+                
+                var currentPool = typePool
+                        
+                if let index = typePool.index(where: { (typeData) -> Bool in
+                    if let lhs = typeData[Key.id] as? String, let rhs = data[Key.id] as? String {
+                        return lhs == rhs
+                    }
+                    return false
+                }) {
+                    currentPool.insert(Treasure.replace(currentPool.remove(at: index), with: data), at: index)
+                } else {
+                    currentPool.append(data)
+                }
+                
+                Treasure.privateDataPool[type] = currentPool
             }
         }
     }
@@ -199,45 +194,14 @@ public struct Treasure {
     /// Replaces values in the current object in the pool with the new object's values
     private static func replace(_ oldObject: JSONObject, with newObject: JSONObject) -> JSONObject {
         
-        guard oldObject != newObject else { return newObject }
-    
-        let withAttributes = Treasure.replaceValuesIn(oldObject, with: newObject, for: Key.attributes())
-        return Treasure.replaceValuesIn(withAttributes, with: newObject, for: Key.relationships())
+        return Treasure.replaceValuesIn(Treasure.replaceValuesIn(oldObject, with: newObject, for: Key.attributes()), with: newObject, for: Key.relationships())
     }
     
     private static func replaceValuesIn(_ oldObject: JSONObject, with newObject: JSONObject, for key: String) -> JSONObject {
         
-        if let oldValues = oldObject[key] as? JSONObject {
-            
-            if let newValues = newObject[key] as? JSONObject {
-                
-                guard oldValues != newValues else {
-                    return newObject
-                }
-                
-                var oldMutable = oldObject
-                var oldMutableValues = oldValues
-                
-                for key in (newValues as NSDictionary).allKeys {
-                    let key = key as! String
-                    oldMutableValues[key] = newValues[key]
-                }
-                
-                oldMutable[key] = oldMutableValues
-                
-                return oldMutable
-            } else {
-                return oldObject
-            }
-        } else if let newValues = newObject[key] as? JSONObject {
-            
-            var oldMutable = oldObject
-            
-            oldMutable[key] = newValues
-            return oldMutable
-        }
-        
-        return oldObject
+        var oldMutable = oldObject
+        oldMutable[key] = (newObject[key] as? JSONObject)?.merging((oldObject[key] as? JSONObject) ?? [:]) { (new, _) in new }
+        return oldMutable
     }
     
     private static func jsonForResourceWith(type: String, id: String?, attributes: JSONObject?, relationship: JSONObject?) -> JSONObject {
@@ -260,21 +224,22 @@ public struct Treasure {
     
     private static func addRelationshipToResource(data: inout NSMutableDictionary, relationship: JSONObject?) {
         
-        if let relationship = relationship {
-            data[Key.relationships()] = relationship
-        }
+        guard let relationship = relationship else { return }
+        
+        data[Key.relationships()] = relationship
     }
     
     private static func addRelationshipsToResource(data: inout NSMutableDictionary, relationships: [JSONObject]?) {
         
-        if let relationships = relationships {
-            let relationshipsObject = NSMutableDictionary()
-            for relationship in relationships {
-                relationshipsObject.addEntries(from: relationship)
-            }
-            
-            data[Key.relationships()] = relationshipsObject
+        guard let relationships = relationships else { return }
+        
+        let relationshipsObject = NSMutableDictionary()
+        
+        for relationship in relationships {
+            relationshipsObject.addEntries(from: relationship)
         }
+        
+        data[Key.relationships()] = relationshipsObject
     }
     
     private static func jsonForResourceDataWith(type: String, id: String? = nil, attributes: JSONObject?) -> NSMutableDictionary {
@@ -293,26 +258,20 @@ public struct Treasure {
     }
     
     /// Finds, if possible, the data resource for the given relationship type and id
-    private static func resourceFor<T: Mappable>(relationshipData: RelationshipData) throws -> T {
+    private static func resourceFor<T: TreasureMappable>(relationshipData: RelationshipData) throws -> T {
         
-        let error = MapperError.customError(field: Key.included, message: "Included data does not exist in pool")
+        let error = MapperError.customError(field: Key.included, message: "Included data does not exist in Treasure pool")
         
-        if let typePool = Treasure.chest[relationshipData.type] as? [JSONObject] {
-            let data = typePool.filter({ (json) -> Bool in
-                if let jsonId = json[Key.id] as? String, jsonId == relationshipData.id {
-                    return true
-                }
-                
-                return false
-            })
+        guard let typePool = Treasure.chest[relationshipData.type] as? [JSONObject] else { throw error }
+        
+        let data = typePool.filter({ (json) -> Bool in
+            guard let jsonId = json[Key.id] as? String else { return false }
             
-            guard data.first != nil else {
-                throw error
-            }
-            
-            return try Mapper(JSON: data.first!).from("")
-        }
+            return jsonId == relationshipData.id
+        })
         
-        throw error
+        guard let first = data.first else { throw error }
+        
+        return try Mapper(JSON: first).from("")
     }
 }

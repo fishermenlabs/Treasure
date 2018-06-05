@@ -31,7 +31,6 @@ Included resources are not cached, so the data pool will only exist for the curr
 
 ```swift
 import Treasure
-import Mapper
 
 struct Project: Resource {
     
@@ -40,7 +39,7 @@ struct Project: Resource {
     let title: String
     let manager: User?
 
-    init(map: Mapper) throws {
+    init(map: TreasureMapper) throws {
         id = try map.from(Key.id)
         type = try map.from(Key.type)
         title = try map.from(Key.attributes("title"))

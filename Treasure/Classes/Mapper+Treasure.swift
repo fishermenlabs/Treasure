@@ -3,12 +3,14 @@
 //  Treasure
 //
 //  Created by Kevin Weber on 12/21/16.
-//  Copyright © 2016 Fishermen Labs. All rights reserved.
-//
+//  Copyright © 2018 Fishermen Labs. All rights reserved.
 //
 
 import Foundation
 import Mapper
+
+public typealias TreasureMapper = Mapper
+public typealias TreasureMappable = Mappable
 
 extension Dictionary: DefaultConvertible {}
 

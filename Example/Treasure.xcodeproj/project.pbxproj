@@ -22,7 +22,7 @@
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		68B177EA6863D4616588F51F /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		6A55D4D0188E25A98E23B096 /* Pods_Treasure_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Treasure_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8DC4C0DF42BA539E46C395D5 /* Treasure.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Treasure.podspec; path = ../Treasure.podspec; sourceTree = "<group>"; };
+		8DC4C0DF42BA539E46C395D5 /* Treasure.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Treasure.podspec; path = ../Treasure.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		B94802B0D1F0B00DF6DAECAC /* Pods-Treasure_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Treasure_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Treasure_Tests/Pods-Treasure_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		C013CCCD86839D909A3CCE51 /* Pods-Treasure_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Treasure_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Treasure_Tests/Pods-Treasure_Tests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
