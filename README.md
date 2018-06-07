@@ -26,7 +26,7 @@ Relationships can be used to map included resources, which are placed into a sha
 
 Included resources are not cached, so the data pool will only exist for the current lifecycle.
 
-If you set `Treasure.strictValidationOnInitialization` to `true`, Incoming resources will be validated, and if invalid the initializer will return `nil`. Validation errors will be thrown as a `DocumentValidationError`. If `false`, errors will still be thrown but the resource map may still succeed.
+If you set `Treasure.strictValidationOnInitialization` to `true`, incoming resources will be validated, and the initializer will return `nil` if invalid. Validation errors will be thrown as a `DocumentValidationError` and an error message printed to console. If `false`, errors will still be thrown but the resource map may still succeed. `Treasure.strictValidationOnInitialization` is by default set to `false`.
 
 ```swift
 import Treasure
@@ -66,7 +66,7 @@ if let json = json as? [String: Any] {
     let projects: [Project]? = treasure?.map()
     
     guard projects != nil else {
-        print(treasure.errors)
+        print(treasure!.errors)
     }
 }
 ```
