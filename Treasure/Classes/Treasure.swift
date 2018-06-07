@@ -61,7 +61,7 @@ public struct Treasure {
     public init?(json: JSONObject) {
         self.document = json
         
-        guard (try? validateDocument(self.document)) != nil else { return nil }
+        guard validateDocument(self.document) else { return nil }
         
         initialize()
     }
@@ -69,7 +69,7 @@ public struct Treasure {
     public init?(json: NSDictionary) {
         self.document = json as! JSONObject
         
-        guard (try? validateDocument(self.document)) != nil else { return nil }
+        guard validateDocument(self.document) else { return nil }
         
         initialize()
     }
