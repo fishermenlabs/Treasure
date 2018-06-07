@@ -125,6 +125,12 @@ extension Treasure {
                 throw DocumentValidationError.invalidResource
             }
             
+            if let relationship = resource[Key.relationships()] as? JSONObject {
+                try validateRelationships(json: [relationship])
+            } else if let relationships = resource[Key.relationships()] as? [JSONObject] {
+                try validateRelationships(json: relationships)
+            }
+            
             if let links = resource[Key.links] as? JSONObject {
                 try validateLinks(json: links)
             }
@@ -134,21 +140,25 @@ extension Treasure {
     private func validateRelationships(json: [JSONObject]) throws {
         for relationship in json {
             let keys = relationship.keys
-            
-            guard keys.contains(Key.links)
-                || keys.contains(Key.data)
-                || keys.contains(Key.meta) else {
-                throw DocumentValidationError.invalidRelationship
-            }
-            
-            if let links = relationship[Key.links] as? JSONObject {
-                try validateLinks(json: links)
-            }
-            
-            if let data = relationship[Key.data] as? JSONObject {
-                try validateResourceLinkage(json: [data])
-            } else if let data = relationship[Key.data] as? [JSONObject] {
-                try validateResourceLinkage(json: data)
+
+            for key in keys {
+                
+                guard let object = relationship[key] as? JSONObject,
+                    object.keys.contains(Key.links)
+                    || object.keys.contains(Key.data)
+                    || object.keys.contains(Key.meta) else {
+                        throw DocumentValidationError.invalidRelationship
+                }
+                
+                if let links = object[Key.links] as? JSONObject {
+                    try validateLinks(json: links)
+                }
+                
+                if let data = object[Key.data] as? JSONObject {
+                    try validateResourceLinkage(json: [data])
+                } else if let data = object[Key.data] as? [JSONObject] {
+                    try validateResourceLinkage(json: data)
+                }
             }
         }
     }

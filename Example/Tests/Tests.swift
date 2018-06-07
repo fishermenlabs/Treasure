@@ -35,10 +35,16 @@ class Tests: XCTestCase {
         let test = Treasure(json: TestJson.invalidTopLevelJson)
         let metaTest = Treasure(json: TestJson.metaJson)
         let includedTest = Treasure(json: TestJson.invalidTopLevelIncludedJson)
+        let validTest = Treasure(json: TestJson.validTopLevelJson)
+        let validDocumentWithRelationship = Treasure(json: TestJson.validDocumentWithRelationship)
+        let validDocumentWithManyRelationships = Treasure(json: TestJson.validDocumentWithManyRelationships)
         
         XCTAssertTrue(test == nil)
         XCTAssertTrue(metaTest != nil)
         XCTAssertTrue(includedTest == nil)
+        XCTAssertTrue(validTest != nil)
+        XCTAssertTrue(validDocumentWithRelationship != nil)
+        XCTAssertTrue(validDocumentWithManyRelationships != nil)
     }
     
     func testCreateToOne() {
