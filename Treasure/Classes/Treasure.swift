@@ -61,7 +61,7 @@ public struct Treasure {
     public init?(json: JSONObject) {
         self.document = json
         
-        guard validateDocument(self.document) else { return nil }
+        guard Treasure.validateDocument(self.document) else { return nil }
         
         initialize()
     }
@@ -69,7 +69,7 @@ public struct Treasure {
     public init?(json: NSDictionary) {
         self.document = json as! JSONObject
         
-        guard validateDocument(self.document) else { return nil }
+        guard Treasure.validateDocument(self.document) else { return nil }
         
         initialize()
     }
@@ -214,7 +214,11 @@ public struct Treasure {
         
         addRelationshipToResource(data: &data, relationship: relationship)
         
-        return [Key.data: data]
+        let document = [Key.data: data]
+        
+        validateDocumentForPost(document)
+        
+        return document
     }
     
     private static func jsonForResourceWith(type: String, id: String?, attributes: JSONObject?, relationships: [JSONObject]?) -> JSONObject {
@@ -223,7 +227,11 @@ public struct Treasure {
         
         addRelationshipsToResource(data: &data, relationships: relationships)
         
-        return [Key.data: data]
+        let document = [Key.data: data]
+        
+        validateDocumentForPost(document)
+        
+        return document
     }
     
     private static func addRelationshipToResource(data: inout NSMutableDictionary, relationship: JSONObject?) {

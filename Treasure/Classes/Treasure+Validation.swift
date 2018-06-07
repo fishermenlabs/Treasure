@@ -19,7 +19,7 @@ extension Treasure {
         case invalidRelationshipResourceLink(String)
     }
     
-    internal func validateDocument(_ json: JSONObject) -> Bool {
+    internal static func validateDocument(_ json: JSONObject) -> Bool {
         do {
             try validateTopLevel(json)
         } catch {
@@ -30,18 +30,41 @@ extension Treasure {
         return true
     }
     
-    private func validateTopLevel(_ json: JSONObject) throws {
+    internal static func validateDocumentForPost(_ json: JSONObject) {
+        do {
+            try validateTopLevelForPost(json)
+        } catch {
+            print("Treasure JSON API Document for POST Validation Error: \(error)")
+            assert(false)
+        }
+    }
+    
+    private static func validateTopLevelForPost(_ json: JSONObject) throws {
+        let keys = json.keys
+
+        guard keys.contains(Key.data) else {
+            throw DocumentValidationError.invalidTopLevel("document for POST must contain data key")
+        }
+        
+        if let data = json[Key.data] as? JSONObject {
+            try validateResourceForPost(json: data)
+        } else {
+            throw DocumentValidationError.invalidTopLevel("document for POST must only contain a single resource")
+        }
+    }
+    
+    private static func validateTopLevel(_ json: JSONObject) throws {
         let keys = json.keys
         
         if keys.contains(Key.data) && keys.contains(Key.errors) {
             throw DocumentValidationError.invalidTopLevel("data and errors must not exist in the same document")
         } else if keys.contains(Key.included) && !keys.contains(Key.data) {
-            throw DocumentValidationError.invalidTopLevel("included must not exist without data")
+            throw DocumentValidationError.invalidTopLevel("included must not exist without data key")
         } else if keys.contains(Key.meta)
             || keys.contains(Key.data)
             || keys.contains(Key.errors) {
             
-            if let links = document[Key.links] as? JSONObject {
+            if let links = json[Key.links] as? JSONObject {
                 try validateLinks(json: links)
             }
             
@@ -53,13 +76,13 @@ extension Treasure {
                 try validatePrimaryData(json)
             }
             
-            if let included = document[Key.included] as? [JSONObject] {
+            if let included = json[Key.included] as? [JSONObject] {
                 try validateResources(json: included)
             }
         }
     }
     
-    private func validateErrors(_ json: JSONObject) throws {
+    private static func validateErrors(_ json: JSONObject) throws {
         guard let errors = json[Key.errors] as? [JSONObject] else {
             throw DocumentValidationError.invalidErrors("errors is invalid")
         }
@@ -90,7 +113,7 @@ extension Treasure {
         }
     }
     
-    private func validateLinks(json: JSONObject, withAbout: Bool = false) throws {
+    private static func validateLinks(json: JSONObject, withAbout: Bool = false) throws {
         if withAbout {
             guard json.keys.contains(Key.about) else {
                 throw DocumentValidationError.invalidLinks("links within errors must contain about")
@@ -102,13 +125,13 @@ extension Treasure {
         }
     }
     
-    private func validateSource(json: JSONObject) throws {
+    private static func validateSource(json: JSONObject) throws {
         guard json.keys.contains(Key.pointer) || json.keys.contains(Key.parameter) else {
             throw DocumentValidationError.invalidErrorSource("source may contain either pointer and or paramater")
         }
     }
     
-    private func validatePrimaryData(_ document: JSONObject) throws {
+    private static func validatePrimaryData(_ document: JSONObject) throws {
         
         if let data = document[Key.data] as? JSONObject {
             try validateResources(json: [data])
@@ -117,7 +140,28 @@ extension Treasure {
         }
     }
     
-    private func validateResources(json: [JSONObject]) throws {
+    private static func validateResourceForPost(json: JSONObject) throws {
+        let keys = json.keys
+        
+        guard keys.contains(Key.type) else {
+            throw DocumentValidationError.invalidResource("resouce for POST must contain at least type")
+        }
+        
+        guard keys.contains(Key.attributes())
+            || keys.contains(Key.relationships())
+            || keys.contains(Key.links)
+            || keys.contains(Key.meta) else {
+                throw DocumentValidationError.invalidResource("resource may contain either attributes, relationships, links, and or meta")
+        }
+        
+        if let relationship = json[Key.relationships()] as? JSONObject {
+            try validateRelationships(json: [relationship])
+        } else if let relationships = json[Key.relationships()] as? [JSONObject] {
+            try validateRelationships(json: relationships)
+        }
+    }
+    
+    private static func validateResources(json: [JSONObject]) throws {
         for resource in json {
             let keys = resource.keys
             
@@ -144,7 +188,7 @@ extension Treasure {
         }
     }
     
-    private func validateRelationships(json: [JSONObject]) throws {
+    private static func validateRelationships(json: [JSONObject]) throws {
         for relationship in json {
             let keys = relationship.keys
 
@@ -170,7 +214,7 @@ extension Treasure {
         }
     }
     
-    private func validateResourceLinkage(json: [JSONObject]) throws {
+    private static func validateResourceLinkage(json: [JSONObject]) throws {
         for resource in json {
             let keys = resource.keys
 
