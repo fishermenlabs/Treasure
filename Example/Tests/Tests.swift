@@ -9,6 +9,9 @@ fileprivate func == <K, V>(left: [K:V], right: [K:V]) -> Bool {
 class Tests: XCTestCase {
     
     override func setUp() {
+        
+        Treasure.strictValidationOnInitialization = true
+        
         super.setUp()
     }
     
@@ -32,7 +35,7 @@ class Tests: XCTestCase {
     }
     
     func testTopLevelValidation() {
-        
+
         let test = Treasure(json: TestJson.invalidTopLevelJson)
         let metaTest = Treasure(json: TestJson.metaJson)
         let includedTest = Treasure(json: TestJson.invalidTopLevelIncludedJson)

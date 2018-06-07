@@ -26,7 +26,7 @@ Relationships can be used to map included resources, which are placed into a sha
 
 Included resources are not cached, so the data pool will only exist for the current lifecycle.
 
-Incoming resources will be validated, and if invalid the initializer will return `nil`. Validation errors will be thrown as a `DocumentValidationError`.
+If you set `Treasure.strictValidationOnInitialization` to `true`, Incoming resources will be validated, and if invalid the initializer will return `nil`. Validation errors will be thrown as a `DocumentValidationError`. If `false`, errors will still be thrown but the resource map may still succeed.
 
 ```swift
 import Treasure

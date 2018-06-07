@@ -28,6 +28,8 @@ public struct Treasure {
         return poolCopy
     }
     
+    public static var strictValidationOnInitialization = false
+    
     /// Returns the objects under the 'meta' key according to the JSON API specification
     public var meta: JSONObject? {
         return document[Key.meta] as? JSONObject
@@ -61,7 +63,11 @@ public struct Treasure {
     public init?(json: JSONObject) {
         self.document = json
         
-        guard Treasure.validateDocument(self.document) else { return nil }
+        if Treasure.strictValidationOnInitialization {
+            guard Treasure.validateDocument(self.document) else { return nil }
+        } else {
+            let _ = Treasure.validateDocument(self.document)
+        }
         
         initialize()
     }
@@ -69,7 +75,11 @@ public struct Treasure {
     public init?(json: NSDictionary) {
         self.document = json as! JSONObject
         
-        guard Treasure.validateDocument(self.document) else { return nil }
+        if Treasure.strictValidationOnInitialization {
+            guard Treasure.validateDocument(self.document) else { return nil }
+        } else {
+            let _ = Treasure.validateDocument(self.document)
+        }
         
         initialize()
     }
