@@ -43,6 +43,35 @@ struct Project: Resource {
 
 struct TestJson {
     
+    static let invalidTopLevelJson: JSONObject = [
+        "data": [
+            "id": "1",
+            "type": "projects",
+            "attributes": [
+                "title": "Test Project"
+            ]
+        ],
+        "errors": [
+            "title": "There was an error."
+        ],
+        "meta": [
+            "test": "tester"
+        ]
+    ]
+    
+    static let invalidTopLevelIncludedJson: JSONObject = [
+        "meta": [
+            "test": "tester"
+        ],
+        "included": [userJson]
+    ]
+    
+    static let metaJson: JSONObject = [
+        "meta": [
+            "test": "tester"
+        ]
+    ]
+    
     static let userJson: JSONObject = [
         "id": "4",
         "type": "users",

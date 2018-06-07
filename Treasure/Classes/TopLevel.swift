@@ -23,11 +23,11 @@ public struct Errors: TreasureMappable {
     public init(map: TreasureMapper) throws {
         id = try? map.from(Key.id)
         links = try? map.from(Key.links)
-        status = try? map.from("status")
-        code = try? map.from("code")
-        title = try? map.from("title")
-        detail = try? map.from("detail")
-        source = try? map.from("source")
+        status = try? map.from(Key.status)
+        code = try? map.from(Key.code)
+        title = try? map.from(Key.title)
+        detail = try? map.from(Key.detail)
+        source = try? map.from(Key.source)
         meta = try? map.from(Key.meta)
     }
 }
@@ -38,7 +38,7 @@ public struct JSONAPI: TreasureMappable {
     let meta: JSONObject?
     
     public init(map: TreasureMapper) throws {
-        version = try? map.from("version")
+        version = try? map.from(Key.version)
         meta = try? map.from(Key.meta)
     }
 }
