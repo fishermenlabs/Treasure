@@ -21,7 +21,7 @@ class Tests: XCTestCase {
     
     func testExample() {
         
-        let testProject: Project? = Treasure(json: TestJson.projectJson).map()
+        let testProject: Project? = Treasure(json: TestJson.projectJson)?.map()
         let testUser: User? = User.from(TestJson.userJson)
         
         if let manager = testProject?.manager, let user = testUser {
@@ -31,6 +31,23 @@ class Tests: XCTestCase {
         }
     }
     
+    func testTopLevelValidation() {
+        
+        let test = Treasure(json: TestJson.invalidTopLevelJson)
+        let metaTest = Treasure(json: TestJson.metaJson)
+        let includedTest = Treasure(json: TestJson.invalidTopLevelIncludedJson)
+        let validTest = Treasure(json: TestJson.validTopLevelJson)
+        let validDocumentWithRelationship = Treasure(json: TestJson.validDocumentWithRelationship)
+        let validDocumentWithManyRelationships = Treasure(json: TestJson.validDocumentWithManyRelationships)
+        
+        XCTAssertTrue(test == nil)
+        XCTAssertTrue(metaTest != nil)
+        XCTAssertTrue(includedTest == nil)
+        XCTAssertTrue(validTest != nil)
+        XCTAssertTrue(validDocumentWithRelationship != nil)
+        XCTAssertTrue(validDocumentWithManyRelationships != nil)
+    }
+
     func testCreateToOne() {
         
         let toOneRelationship = ToOneRelationship(data: RelationshipData(type: "users", id: "4")).jsonWith(key: "users")!
@@ -84,7 +101,7 @@ class Tests: XCTestCase {
     
     func testUpdate() {
         
-        let _: Project? = Treasure(json: TestJson.projectJson).map()
+        let _: Project? = Treasure(json: TestJson.projectJson)?.map()
         
         let toOneRelationship = ToOneRelationship(data: RelationshipData(type: "users", id: "10")).jsonWith(key: "users")!
         
@@ -138,8 +155,8 @@ class Tests: XCTestCase {
             "included": [userJson]
         ]
         
-        let _: Project? = Treasure(json: TestJson.projectJson).map()
-        let _: Project? = Treasure(json: json).map()
+        let _: Project? = Treasure(json: TestJson.projectJson)?.map()
+        let _: Project? = Treasure(json: json)?.map()
         
         if let user = Treasure.chest["users"] as? [JSONObject] {
             XCTAssertTrue(user.first! == testUserJson)
@@ -150,8 +167,8 @@ class Tests: XCTestCase {
     
     func testStoreData() {
         
-        let _: Project? = Treasure(json: TestJson.projectJson).map()
-        let _: User? = Treasure(json: TestJson.userJson).map()
+        let _: Project? = Treasure(json: TestJson.projectJson)?.map()
+        let _: User? = Treasure(json: TestJson.userJson)?.map()
         
         let json = Treasure.chest
         if let data = Treasure.chestData() {
@@ -168,7 +185,7 @@ class Tests: XCTestCase {
     
     func testResourceFromRelationship() {
         
-        let project: Project? = Treasure(json: TestJson.projectJson).map()
+        let project: Project? = Treasure(json: TestJson.projectJson)?.map()
         
         let relationship: ToOneRelationship = ToOneRelationship(data: RelationshipData(type: "users", id: "4"))
         

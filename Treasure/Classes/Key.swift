@@ -28,6 +28,15 @@ public struct Key {
     public static let href = "href"
     public static let related = "related"
     public static let relationship = "relationship"
+    public static let status = "status"
+    public static let code = "code"
+    public static let title = "title"
+    public static let detail = "detail"
+    public static let source = "source"
+    public static let version = "version"
+    public static let about = "about"
+    public static let pointer = "pointer"
+    public static let parameter = "parameter"
     
     public static func attributes(_ key: String? = nil) -> String {
         guard key?.isEmpty == false else {

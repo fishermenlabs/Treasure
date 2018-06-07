@@ -43,6 +43,88 @@ struct Project: Resource {
 
 struct TestJson {
     
+    static let validDocumentWithRelationship: JSONObject = [
+        "data": [
+            "id": "1",
+            "type": "projects",
+            "attributes": [
+                "title": "Test Project"
+            ],
+            "relationships": [
+                "author": [
+                    "links": [
+                        "self": "/projects/1/relationships/author",
+                        "related": "/projects/1/author"
+                    ],
+                    "data": [ "type": "people", "id": "9" ]
+                ]
+            ]
+        ]
+    ]
+    
+    static let validDocumentWithManyRelationships: JSONObject = [
+        "data": [
+            "id": "1",
+            "type": "projects",
+            "attributes": [
+                "title": "Test ToMany"
+            ],
+            "relationships": [
+                "users": [
+                    "data": ["type": "users", "id": "4"]
+                ],
+                "points": [
+                    "data": [["type": "points", "id": "1"], ["type": "points", "id": "2"]]
+                ]
+            ]
+        ]
+    ]
+    
+    static let validTopLevelJson: JSONObject = [
+        "data": [
+            "id": "1",
+            "type": "projects",
+            "attributes": [
+                "title": "Test Project"
+            ]
+        ],
+        "links": [
+            "self": "http://example.com/projects"
+        ],
+        "meta": [
+            "test": "tester"
+        ]
+    ]
+    
+    static let invalidTopLevelJson: JSONObject = [
+        "data": [
+            "id": "1",
+            "type": "projects",
+            "attributes": [
+                "title": "Test Project"
+            ]
+        ],
+        "errors": [
+            "title": "There was an error."
+        ],
+        "meta": [
+            "test": "tester"
+        ]
+    ]
+    
+    static let invalidTopLevelIncludedJson: JSONObject = [
+        "meta": [
+            "test": "tester"
+        ],
+        "included": [userJson]
+    ]
+    
+    static let metaJson: JSONObject = [
+        "meta": [
+            "test": "tester"
+        ]
+    ]
+    
     static let userJson: JSONObject = [
         "id": "4",
         "type": "users",

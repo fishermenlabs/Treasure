@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		01A9367B44FCF059D5A46BAD168F03C3 /* URL+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D826A5393577A91B517F26819DF50755 /* URL+Convertible.swift */; };
+		095C1BC520C88DE10011B6EB /* Treasure+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095C1BC420C88DE10011B6EB /* Treasure+Validation.swift */; };
 		1E4D6C5626521EF7BDB52F791ED0433A /* ModelMapper-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 225B6C858DAF7CA1A2645885B2C5A663 /* ModelMapper-dummy.m */; };
 		290214C25D71DE9A06923DC8F6100462 /* Pods-Treasure_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5D19679AA5B55A4E0E55A024E8EEF3 /* Pods-Treasure_Tests-dummy.m */; };
 		3801A87600FAABB9621FEE3AA9653897 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88E5EF047303D826588B9C2FDD460BA4 /* Foundation.framework */; };
@@ -60,6 +61,7 @@
 
 /* Begin PBXFileReference section */
 		0402E3687561D758D6FE13FFA5A981C6 /* DefaultConvertible.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DefaultConvertible.swift; path = Sources/DefaultConvertible.swift; sourceTree = "<group>"; };
+		095C1BC420C88DE10011B6EB /* Treasure+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Treasure+Validation.swift"; path = "Treasure/Classes/Treasure+Validation.swift"; sourceTree = "<group>"; };
 		09F5298039CA40B706917D50705EB25A /* Treasure.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Treasure.xcconfig; sourceTree = "<group>"; };
 		0A63D0CBF0836019DC68CE1CCC06F796 /* Treasure.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Treasure.swift; path = Treasure/Classes/Treasure.swift; sourceTree = "<group>"; };
 		1C58F0C97BAAF0AFD04553C282090772 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -67,9 +69,9 @@
 		233D2F452457F9D5B9E57B0011056EFC /* Convertible.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Convertible.swift; path = Sources/Convertible.swift; sourceTree = "<group>"; };
 		2CAA04FE07F4E14A9A93BDD2447051A5 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		35F2943317AC04B2D8DCED93925CFCD1 /* Pods-Treasure_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Treasure_Tests-umbrella.h"; sourceTree = "<group>"; };
-		42FD36BF7BD5A0058E603819ADFB44E1 /* Pods_Treasure_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Treasure_Tests.framework; path = "Pods-Treasure_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		42FD36BF7BD5A0058E603819ADFB44E1 /* Pods_Treasure_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Treasure_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49DF7D3942C015F66101C2F12149B0B1 /* Pods-Treasure_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Treasure_Tests-frameworks.sh"; sourceTree = "<group>"; };
-		50D38081AF4B007372F4B730AD271190 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		50D38081AF4B007372F4B730AD271190 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		5710D02A8C7F7BE3141DFE29518BDC70 /* Treasure-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Treasure-dummy.m"; sourceTree = "<group>"; };
 		5800D8F35C89252D0EA677D0256448A3 /* ModelMapper-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ModelMapper-prefix.pch"; sourceTree = "<group>"; };
 		604B317C67118CC2FA1C957001D56E53 /* TopLevel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TopLevel.swift; path = Treasure/Classes/TopLevel.swift; sourceTree = "<group>"; };
@@ -81,14 +83,14 @@
 		6E5D19679AA5B55A4E0E55A024E8EEF3 /* Pods-Treasure_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Treasure_Tests-dummy.m"; sourceTree = "<group>"; };
 		721F95FF0695A6DE9581808C127F894B /* Mapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Mapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7615B86C7F91B76A4DC067BAEAD6FB3A /* ModelMapper-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ModelMapper-umbrella.h"; sourceTree = "<group>"; };
-		775C4C4FCCFD0024E417D255740A920F /* Treasure.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = Treasure.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		775C4C4FCCFD0024E417D255740A920F /* Treasure.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; path = Treasure.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		7C9197F5B5511237AA4FCBC6488EBBF6 /* Pods-Treasure_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Treasure_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		7CA9B5648A5AF3D2F23EDFE9DB065A68 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		7CA9B5648A5AF3D2F23EDFE9DB065A68 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		864BD67D3318534EBFFB8BF3282075DC /* MapperError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapperError.swift; path = Sources/MapperError.swift; sourceTree = "<group>"; };
 		88E5EF047303D826588B9C2FDD460BA4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		92A4B8499318D9A69055C42151ADED86 /* Resource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Resource.swift; path = Treasure/Classes/Resource.swift; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9486A9FDB95E75A44098D2CFDF5269AA /* Mapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Mapper.framework; path = ModelMapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9486A9FDB95E75A44098D2CFDF5269AA /* Mapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Mapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		97641FC941AA33D869F046B80013673B /* Treasure-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Treasure-prefix.pch"; sourceTree = "<group>"; };
 		9A1C72AC2DC7001CF4BCB36C82FE3EFE /* Pods-Treasure_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Treasure_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		A026F0A344D2136CD0195EEC0E238478 /* Mapper+Treasure.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Mapper+Treasure.swift"; path = "Treasure/Classes/Mapper+Treasure.swift"; sourceTree = "<group>"; };
@@ -98,7 +100,7 @@
 		B2AEE2F283FD9A7E385F802E5EF9F1DD /* Pods-Treasure_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Treasure_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		B51020384AF0C3722A23B06828A28A21 /* Treasure-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Treasure-umbrella.h"; sourceTree = "<group>"; };
 		D826A5393577A91B517F26819DF50755 /* URL+Convertible.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "URL+Convertible.swift"; path = "Sources/URL+Convertible.swift"; sourceTree = "<group>"; };
-		D8404299F0EC3348604F015B8E6990C3 /* Treasure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Treasure.framework; path = Treasure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8404299F0EC3348604F015B8E6990C3 /* Treasure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Treasure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBECB90E99CC2ABDDDAFCA3DF3EBA7BF /* Mappable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Mappable.swift; path = Sources/Mappable.swift; sourceTree = "<group>"; };
 		E29AB00F6842F26375C244953CE13BC0 /* Pods-Treasure_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Treasure_Tests-resources.sh"; sourceTree = "<group>"; };
 		E59ED2CDEB3DC8E8B29F01E3BFAB06E9 /* Transform.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Transform.swift; path = Sources/Transform.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				92A4B8499318D9A69055C42151ADED86 /* Resource.swift */,
 				604B317C67118CC2FA1C957001D56E53 /* TopLevel.swift */,
 				0A63D0CBF0836019DC68CE1CCC06F796 /* Treasure.swift */,
+				095C1BC420C88DE10011B6EB /* Treasure+Validation.swift */,
 				033BE1E426138E05EBA4F162A14F4EC2 /* Pod */,
 				94F33711BFA1CB49472D3F6AAAD1C415 /* Support Files */,
 			);
@@ -277,7 +280,6 @@
 				D826A5393577A91B517F26819DF50755 /* URL+Convertible.swift */,
 				B9D8B9299ADE47582ED8A64F0C27EA68 /* Support Files */,
 			);
-			name = ModelMapper;
 			path = ModelMapper;
 			sourceTree = "<group>";
 		};
@@ -436,6 +438,7 @@
 				58D62282BA1A1E335C885E963ECED060 /* Relationship.swift in Sources */,
 				E2C009E51EB115A9B9D043CCD84077EC /* Resource.swift in Sources */,
 				74696499BB9D9BD67FEA9826C7F2FDD7 /* TopLevel.swift in Sources */,
+				095C1BC520C88DE10011B6EB /* Treasure+Validation.swift in Sources */,
 				7C0E97080983DB557401F0136D28321E /* Treasure-dummy.m in Sources */,
 				DDEC5FBB30D8DA93B42D39EEBD30CD4E /* Treasure.swift in Sources */,
 			);

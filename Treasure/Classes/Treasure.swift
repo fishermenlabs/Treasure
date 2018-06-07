@@ -28,54 +28,58 @@ public struct Treasure {
         return poolCopy
     }
     
-    /// The full json object received on initialization
-    private let json: JSONObject
-    
     /// Returns the objects under the 'meta' key according to the JSON API specification
     public var meta: JSONObject? {
-        return json[Key.meta] as? JSONObject
+        return document[Key.meta] as? JSONObject
     }
     
     /// Returns the objects under the 'errors' key according to the JSON API specification
     public var errors: [Errors]? {
-        return try? Mapper(JSON: json).from(Key.errors)
+        return try? Mapper(JSON: document).from(Key.errors)
     }
     
     /// Returns the objects under the 'jsonapi' key according to the JSON API specification
     public var jsonapi: JSONAPI? {
-        return try? Mapper(JSON: json).from(Key.jsonapi)
+        return try? Mapper(JSON: document).from(Key.jsonapi)
     }
     
     /// Returns the links objects under the 'links' key according to the JSON API specification
     public var links: JSONObject? {
-        return json[Key.links] as? JSONObject
+        return document[Key.links] as? JSONObject
     }
     
     /// Returns the links objects within the included object under the 'links' key according to the JSON API specification
     public var includedLinks: JSONObject? {
-        guard let included = json[Key.included] as? JSONObject else { return nil }
+        guard let included = document[Key.included] as? JSONObject else { return nil }
         
         return included[Key.links] as? JSONObject
     }
     
-    public init(json: JSONObject) {
-        self.json = json
+    /// The full json object received on initialization
+    internal let document: JSONObject
+    
+    public init?(json: JSONObject) {
+        self.document = json
+        
+        guard Treasure.validateDocument(self.document) else { return nil }
         
         initialize()
     }
     
-    public init(json: NSDictionary) {
-        self.json = json as! JSONObject
+    public init?(json: NSDictionary) {
+        self.document = json as! JSONObject
+        
+        guard Treasure.validateDocument(self.document) else { return nil }
         
         initialize()
     }
     
     public func map<T: Resource>() -> T? {
-        return try? Mapper(JSON: json).from(Key.data)
+        return try? Mapper(JSON: document).from(Key.data)
     }
     
     public func map<T: Resource>() -> [T]? {
-        return try? Mapper(JSON: json).from(Key.data)
+        return try? Mapper(JSON: document).from(Key.data)
     }
     
     public static func clearChest() {
@@ -149,14 +153,14 @@ public struct Treasure {
     
     private func poolData() {
         //Pool top-level data
-        if let data = self.json[Key.data] as? JSONObject {
+        if let data = document[Key.data] as? JSONObject {
             Treasure.pool([data])
-        } else if let data = self.json[Key.data] as? [JSONObject] {
+        } else if let data = document[Key.data] as? [JSONObject] {
             Treasure.pool(data)
         }
             
         //Pool included data
-        if let includedData = self.json[Key.included] as? [JSONObject] {
+        if let includedData = document[Key.included] as? [JSONObject] {
             Treasure.pool(includedData)
         }
     }
@@ -210,7 +214,11 @@ public struct Treasure {
         
         addRelationshipToResource(data: &data, relationship: relationship)
         
-        return [Key.data: data]
+        let document = [Key.data: data]
+        
+        validateDocumentForPost(document)
+        
+        return document
     }
     
     private static func jsonForResourceWith(type: String, id: String?, attributes: JSONObject?, relationships: [JSONObject]?) -> JSONObject {
@@ -219,7 +227,11 @@ public struct Treasure {
         
         addRelationshipsToResource(data: &data, relationships: relationships)
         
-        return [Key.data: data]
+        let document = [Key.data: data]
+        
+        validateDocumentForPost(document)
+        
+        return document
     }
     
     private static func addRelationshipToResource(data: inout NSMutableDictionary, relationship: JSONObject?) {
