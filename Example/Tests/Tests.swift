@@ -32,6 +32,7 @@ class Tests: XCTestCase {
     }
     
     func testTopLevelValidation() {
+        
         let test = Treasure(json: TestJson.invalidTopLevelJson)
         let metaTest = Treasure(json: TestJson.metaJson)
         let includedTest = Treasure(json: TestJson.invalidTopLevelIncludedJson)
@@ -46,7 +47,7 @@ class Tests: XCTestCase {
         XCTAssertTrue(validDocumentWithRelationship != nil)
         XCTAssertTrue(validDocumentWithManyRelationships != nil)
     }
-    
+
     func testCreateToOne() {
         
         let toOneRelationship = ToOneRelationship(data: RelationshipData(type: "users", id: "4")).jsonWith(key: "users")!
