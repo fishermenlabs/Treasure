@@ -1,6 +1,6 @@
 # Treasure
 
-Treasure is a small set of tools on top of Lyft's [Mapper](https://github.com/lyft/mapper) library to convert objects according to the [JSON API](http://jsonapi.org) specification. If you're not using the JSON API specification, then only using Mapper should be sufficient.
+Treasure is a small set of tools on top of Lyft's [Mapper](https://github.com/lyft/mapper) library to map objects according to the [JSON API](http://jsonapi.org) specification. If you're not using the JSON API specification, then only using Mapper should be sufficient.
 
 ## Installation
 
@@ -64,10 +64,18 @@ if let json = json as? [String: Any] {
 
     let treasure = Treasure(json: json)
     let projects: [Project]? = treasure?.map()
-    
+
     guard projects != nil else {
         print(treasure!.errors)
     }
+}
+```
+
+If you'd like to map resources without adding data to the pool, you can use the static version of the  `map` function instead. This is just a convenience wrapper that removes the provided json from the chest before returning the resource. Using this function will not let you access other top-level JSON API objects, as it does not return a `Treasure` object.
+
+```swift
+if let json = json as? [String: Any] {
+    let projects: [Project]? = Treasure.map(json: json)
 }
 ```
 

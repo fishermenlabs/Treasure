@@ -50,6 +50,27 @@ class Tests: XCTestCase {
         XCTAssertTrue(validDocumentWithRelationship != nil)
         XCTAssertTrue(validDocumentWithManyRelationships != nil)
     }
+    
+    func testNoPool() {
+        
+        let testProjectNotRemoved: Project? = Treasure(json: TestJson.validTopLevelJson)?.map()
+        let testProject: Project? = Treasure.map(json: TestJson.projectJson)
+        let testUser: User? = User.from(TestJson.userJson)
+        
+        if let testNotRemoved = testProjectNotRemoved, let typeChest = Treasure.chest[testNotRemoved.type] as? [JSONObject] {
+            XCTAssertTrue(typeChest.contains(where: {$0[Key.id] as! String == testNotRemoved.id}))
+        }
+        
+        if let test = testProject, let typeChest = Treasure.chest[test.type] as? [JSONObject] {
+            XCTAssertFalse(typeChest.contains(where: {$0[Key.id] as! String == test.id}))
+        }
+
+        if let manager = testProject?.manager, let user = testUser {
+            XCTAssertTrue(manager == user)
+        } else {
+            XCTFail()
+        }
+    }
 
     func testCreateToOne() {
         

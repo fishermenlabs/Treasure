@@ -82,7 +82,7 @@ struct TestJson {
     
     static let validTopLevelJson: JSONObject = [
         "data": [
-            "id": "1",
+            "id": "2",
             "type": "projects",
             "attributes": [
                 "title": "Test Project"

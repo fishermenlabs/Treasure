@@ -28,6 +28,7 @@ public struct Treasure {
         return poolCopy
     }
     
+    /// Strictly validates the incoming json document for specification conformance on initialization when set to `true`
     public static var strictValidationOnInitialization = false
     
     /// Returns the objects under the 'meta' key according to the JSON API specification
@@ -60,36 +61,66 @@ public struct Treasure {
     /// The full json object received on initialization
     internal let document: JSONObject
     
+    private static var privateDataPool = JSONObject()
+    
+    private static let concurrentPoolQueue = DispatchQueue(label: "com.treasure.poolQueue", attributes: .concurrent)
+    
     public init?(json: JSONObject) {
         self.document = json
         
-        if Treasure.strictValidationOnInitialization {
-            guard Treasure.validateDocument(self.document) else { return nil }
-        } else {
-            let _ = Treasure.validateDocument(self.document)
-        }
+        guard validateDocumentIfNeeded(json: self.document) else { return nil }
         
-        initialize()
+        poolData()
     }
     
     public init?(json: NSDictionary) {
         self.document = json as! JSONObject
         
-        if Treasure.strictValidationOnInitialization {
-            guard Treasure.validateDocument(self.document) else { return nil }
-        } else {
-            let _ = Treasure.validateDocument(self.document)
-        }
+        guard validateDocumentIfNeeded(json: self.document) else { return nil }
         
-        initialize()
+        poolData()
     }
     
+    /// Maps the json document initialized with Treasure and adds the data to the chest
     public func map<T: Resource>() -> T? {
         return try? Mapper(JSON: document).from(Key.data)
     }
     
     public func map<T: Resource>() -> [T]? {
         return try? Mapper(JSON: document).from(Key.data)
+    }
+    
+    /// Maps the provided json and then removes the data from the chest
+    public static func map<T: Resource>(json: JSONObject) -> T? {
+        let resource: T? = Treasure(json: json)?.map()
+
+        Treasure.removeResourceFromChest(resource)
+        
+        return resource
+    }
+    
+    public static func map<T: Resource>(json: JSONObject) -> [T]? {
+        let resource: [T]? = Treasure(json: json)?.map()
+        
+        Treasure.removeResourcesFromChest(resource)
+        
+        return resource
+    }
+    
+    public static func map<T: Resource>(json: NSDictionary) -> T? {
+        let resource: T? = Treasure(json: json)?.map()
+        
+        Treasure.removeResourceFromChest(resource)
+        
+        return resource
+    }
+    
+    public static func map<T: Resource>(json: NSDictionary) -> [T]? {
+        let resource: [T]? = Treasure(json: json)?.map()
+        
+        Treasure.removeResourcesFromChest(resource)
+        
+        return resource
     }
     
     public static func clearChest() {
@@ -153,12 +184,15 @@ public struct Treasure {
     
     //MARK: Private
     
-    private static var privateDataPool = JSONObject()
-    
-    private static let concurrentPoolQueue = DispatchQueue(label: "com.treasure.poolQueue", attributes: .concurrent)
-    
-    private func initialize() {
-        poolData()
+    private func validateDocumentIfNeeded(json: JSONObject) -> Bool {
+        
+        if Treasure.strictValidationOnInitialization {
+            guard Treasure.validateDocument(self.document) else { return false }
+        } else {
+            let _ = Treasure.validateDocument(self.document)
+        }
+        
+        return true
     }
     
     private func poolData() {
@@ -282,18 +316,44 @@ public struct Treasure {
     /// Finds, if possible, the data resource for the given relationship type and id
     private static func resourceFor<T: TreasureMappable>(relationshipData: RelationshipData) throws -> T {
         
-        let error = MapperError.customError(field: Key.included, message: "Included data does not exist in Treasure pool")
+        let error = MapperError.customError(field: Key.included, message: "Included data does not exist in Treasure chest")
         
         guard let typePool = Treasure.chest[relationshipData.type] as? [JSONObject] else { throw error }
         
         let data = typePool.filter({ (json) -> Bool in
             guard let jsonId = json[Key.id] as? String else { return false }
-            
             return jsonId == relationshipData.id
         })
         
         guard let first = data.first else { throw error }
         
         return try Mapper(JSON: first).from("")
+    }
+    
+    private static func removeResourceFromChest(_ resource: Resource?) {
+        guard let resource = resource else { return }
+        Treasure.concurrentPoolQueue.async(flags: .barrier) {
+            
+            guard var typePool = Treasure.privateDataPool[resource.type] as? [JSONObject],
+                let index = typePool.index(where: { (json) -> Bool in
+                guard let jsonId = json[Key.id] as? String else { return false }
+                return jsonId == resource.id
+            }) else { return }
+            
+            if typePool.count == 1 {
+                Treasure.privateDataPool.removeValue(forKey: resource.type)
+            } else {
+                typePool.remove(at: index)
+                Treasure.privateDataPool[resource.type] = typePool
+            }
+        }
+    }
+    
+    private static func removeResourcesFromChest(_ resources: [Resource]?) {
+        guard let resources = resources else { return }
+        
+        for res in resources {
+            removeResourceFromChest(res)
+        }
     }
 }
