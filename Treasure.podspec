@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Treasure'
-  s.version          = '0.1.9'
+  s.version          = '0.2.0'
   s.summary          = 'A small set of tools for deserializing JSON API objects.'
 
   s.description      = <<-DESC
