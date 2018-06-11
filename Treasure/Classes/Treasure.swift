@@ -65,6 +65,7 @@ public struct Treasure {
     
     private static let concurrentPoolQueue = DispatchQueue(label: "com.treasure.poolQueue", attributes: .concurrent)
     
+    /// Initialize a Treasure object with a json dictionary
     public init?(json: JSONObject) {
         self.document = json
         
@@ -73,6 +74,7 @@ public struct Treasure {
         poolData()
     }
     
+    /// Initialize a Treasure object with a json dictionary
     public init?(json: NSDictionary) {
         self.document = json as! JSONObject
         
@@ -86,6 +88,7 @@ public struct Treasure {
         return try? Mapper(JSON: document).from(Key.data)
     }
     
+    /// Maps the json document initialized with Treasure and adds the data to the chest
     public func map<T: Resource>() -> [T]? {
         return try? Mapper(JSON: document).from(Key.data)
     }
@@ -99,6 +102,7 @@ public struct Treasure {
         return resource
     }
     
+    /// Maps the provided json and then removes the data from the chest
     public static func map<T: Resource>(json: JSONObject) -> [T]? {
         let resource: [T]? = Treasure(json: json)?.map()
         
@@ -107,6 +111,7 @@ public struct Treasure {
         return resource
     }
     
+    /// Maps the provided json and then removes the data from the chest
     public static func map<T: Resource>(json: NSDictionary) -> T? {
         let resource: T? = Treasure(json: json)?.map()
         
@@ -115,6 +120,7 @@ public struct Treasure {
         return resource
     }
     
+    /// Maps the provided json and then removes the data from the chest
     public static func map<T: Resource>(json: NSDictionary) -> [T]? {
         let resource: [T]? = Treasure(json: json)?.map()
         
@@ -123,16 +129,19 @@ public struct Treasure {
         return resource
     }
     
+    /// Remove all json data from the chest
     public static func clearChest() {
         Treasure.concurrentPoolQueue.async(flags: .barrier) {
             Treasure.privateDataPool.removeAll()
         }
     }
     
+    /// Returns the json chest as Data
     public static func chestData() -> Data? {
         return try? JSONSerialization.data(withJSONObject: Treasure.chest)
     }
     
+    /// Stores the provided Data into the chest as json
     public static func store(_ data: Data) {
         guard let json = try? JSONSerialization.jsonObject(with: data), let jsonObject = json as? NSDictionary else { return }
         for array in jsonObject.allValues {
