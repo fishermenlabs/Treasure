@@ -182,6 +182,35 @@ public struct Treasure {
         })
     }
     
+    /// Removes the given Resource from the chest
+    public static func removeResourceFromChest(_ resource: Resource?) {
+        guard let resource = resource else { return }
+        Treasure.concurrentPoolQueue.async(flags: .barrier) {
+            
+            guard var typePool = Treasure.privateDataPool[resource.type] as? [JSONObject],
+                let index = typePool.index(where: { (json) -> Bool in
+                    guard let jsonId = json[Key.id] as? String else { return false }
+                    return jsonId == resource.id
+                }) else { return }
+            
+            if typePool.count == 1 {
+                Treasure.privateDataPool.removeValue(forKey: resource.type)
+            } else {
+                typePool.remove(at: index)
+                Treasure.privateDataPool[resource.type] = typePool
+            }
+        }
+    }
+    
+    /// Removes the given Resources from the chest
+    public static func removeResourcesFromChest(_ resources: [Resource]?) {
+        guard let resources = resources else { return }
+        
+        for res in resources {
+            removeResourceFromChest(res)
+        }
+    }
+    
     //MARK: Private
     
     private func validateDocumentIfNeeded(json: JSONObject) -> Bool {
@@ -328,32 +357,5 @@ public struct Treasure {
         guard let first = data.first else { throw error }
         
         return try Mapper(JSON: first).from("")
-    }
-    
-    private static func removeResourceFromChest(_ resource: Resource?) {
-        guard let resource = resource else { return }
-        Treasure.concurrentPoolQueue.async(flags: .barrier) {
-            
-            guard var typePool = Treasure.privateDataPool[resource.type] as? [JSONObject],
-                let index = typePool.index(where: { (json) -> Bool in
-                guard let jsonId = json[Key.id] as? String else { return false }
-                return jsonId == resource.id
-            }) else { return }
-            
-            if typePool.count == 1 {
-                Treasure.privateDataPool.removeValue(forKey: resource.type)
-            } else {
-                typePool.remove(at: index)
-                Treasure.privateDataPool[resource.type] = typePool
-            }
-        }
-    }
-    
-    private static func removeResourcesFromChest(_ resources: [Resource]?) {
-        guard let resources = resources else { return }
-        
-        for res in resources {
-            removeResourceFromChest(res)
-        }
     }
 }
