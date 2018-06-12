@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		01A9367B44FCF059D5A46BAD168F03C3 /* URL+Convertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D826A5393577A91B517F26819DF50755 /* URL+Convertible.swift */; };
 		095C1BC520C88DE10011B6EB /* Treasure+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095C1BC420C88DE10011B6EB /* Treasure+Validation.swift */; };
+		09B07F4520CF3EF800B04489 /* Treasure+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B07F4420CF3EF800B04489 /* Treasure+Helpers.swift */; };
 		1E4D6C5626521EF7BDB52F791ED0433A /* ModelMapper-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 225B6C858DAF7CA1A2645885B2C5A663 /* ModelMapper-dummy.m */; };
 		290214C25D71DE9A06923DC8F6100462 /* Pods-Treasure_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5D19679AA5B55A4E0E55A024E8EEF3 /* Pods-Treasure_Tests-dummy.m */; };
 		3801A87600FAABB9621FEE3AA9653897 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88E5EF047303D826588B9C2FDD460BA4 /* Foundation.framework */; };
@@ -62,6 +63,7 @@
 /* Begin PBXFileReference section */
 		0402E3687561D758D6FE13FFA5A981C6 /* DefaultConvertible.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DefaultConvertible.swift; path = Sources/DefaultConvertible.swift; sourceTree = "<group>"; };
 		095C1BC420C88DE10011B6EB /* Treasure+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Treasure+Validation.swift"; path = "Treasure/Classes/Treasure+Validation.swift"; sourceTree = "<group>"; };
+		09B07F4420CF3EF800B04489 /* Treasure+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Treasure+Helpers.swift"; path = "Treasure/Classes/Treasure+Helpers.swift"; sourceTree = "<group>"; };
 		09F5298039CA40B706917D50705EB25A /* Treasure.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Treasure.xcconfig; sourceTree = "<group>"; };
 		0A63D0CBF0836019DC68CE1CCC06F796 /* Treasure.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Treasure.swift; path = Treasure/Classes/Treasure.swift; sourceTree = "<group>"; };
 		1C58F0C97BAAF0AFD04553C282090772 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -169,12 +171,13 @@
 			isa = PBXGroup;
 			children = (
 				AC825A33B67CB62A62C4842A24BEC5AA /* Key.swift */,
-				A026F0A344D2136CD0195EEC0E238478 /* Mapper+Treasure.swift */,
 				6807EA57F5F9E318E7155E2E5C71AEA9 /* Relationship.swift */,
 				92A4B8499318D9A69055C42151ADED86 /* Resource.swift */,
 				604B317C67118CC2FA1C957001D56E53 /* TopLevel.swift */,
 				0A63D0CBF0836019DC68CE1CCC06F796 /* Treasure.swift */,
+				09B07F4420CF3EF800B04489 /* Treasure+Helpers.swift */,
 				095C1BC420C88DE10011B6EB /* Treasure+Validation.swift */,
+				A026F0A344D2136CD0195EEC0E238478 /* Mapper+Treasure.swift */,
 				033BE1E426138E05EBA4F162A14F4EC2 /* Pod */,
 				94F33711BFA1CB49472D3F6AAAD1C415 /* Support Files */,
 			);
@@ -437,6 +440,7 @@
 				CF3BB1EB4EC77F6AD872F352482B01AC /* Mapper+Treasure.swift in Sources */,
 				58D62282BA1A1E335C885E963ECED060 /* Relationship.swift in Sources */,
 				E2C009E51EB115A9B9D043CCD84077EC /* Resource.swift in Sources */,
+				09B07F4520CF3EF800B04489 /* Treasure+Helpers.swift in Sources */,
 				74696499BB9D9BD67FEA9826C7F2FDD7 /* TopLevel.swift in Sources */,
 				095C1BC520C88DE10011B6EB /* Treasure+Validation.swift in Sources */,
 				7C0E97080983DB557401F0136D28321E /* Treasure-dummy.m in Sources */,

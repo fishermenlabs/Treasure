@@ -42,4 +42,3 @@ public struct JSONAPI: TreasureMappable {
         meta = try? map.from(Key.meta)
     }
 }
-

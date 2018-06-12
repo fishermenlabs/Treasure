@@ -19,6 +19,19 @@ extension Treasure {
         case invalidRelationshipResourceLink(String)
     }
     
+    // MARK: Internal
+    
+    internal func validateDocumentIfNeeded(json: JSONObject) -> Bool {
+        
+        if Treasure.strictValidationOnInitialization {
+            guard Treasure.validateDocument(self.document) else { return false }
+        } else {
+            let _ = Treasure.validateDocument(self.document)
+        }
+        
+        return true
+    }
+    
     internal static func validateDocument(_ json: JSONObject) -> Bool {
         do {
             try validateTopLevel(json)
@@ -38,6 +51,8 @@ extension Treasure {
             assert(false)
         }
     }
+    
+    // MARK: Private
     
     private static func validateTopLevelForPost(_ json: JSONObject) throws {
         let keys = json.keys

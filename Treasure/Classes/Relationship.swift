@@ -57,11 +57,11 @@ public struct ToManyRelationship: Relationship {
         
         guard data != nil else { return nil }
 
-        return [key: [Key.data: data!.map { $0.json } ]]
+        return [key: [Key.data: data!.map { $0.json }]]
     }
     
     public static func jsonWith(key: String, data: [RelationshipData]) -> JSONObject {
-        return [key: [Key.data: data.map { $0.json } ]]
+        return [key: [Key.data: data.map { $0.json }]]
     }
 }
 
