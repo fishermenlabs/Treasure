@@ -17,7 +17,4 @@ public protocol Resource: TreasureMappable {
     
     var id: String {get}
     var type: String {get}
-    
-    /// Define how your custom object is created from a TreasureMapper object
-    init(map: TreasureMapper) throws
 }

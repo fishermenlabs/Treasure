@@ -10,9 +10,14 @@ import Foundation
 import Mapper
 
 public typealias TreasureMapper = Mapper
-public typealias TreasureMappable = Mappable
 
 extension Dictionary: DefaultConvertible {}
+
+public protocol TreasureMappable: Mappable {
+    
+    /// Define how your custom object is created from a TreasureMapper object
+    init(map: TreasureMapper) throws
+}
 
 public extension Mappable {
     
