@@ -191,7 +191,7 @@ public struct Treasure {
         concurrentPoolQueue.async(flags: .barrier) {
             
             guard var typePool = privateDataPool[resource.type] as? [JSONObject],
-                let index = typePool.index(where: { (json) -> Bool in
+                let index = typePool.firstIndex(where: { (json) -> Bool in
                     guard let jsonId = json[Key.id] as? String else { return false }
                     return jsonId == resource.id
                 }) else { return }

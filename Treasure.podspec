@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Treasure'
-  s.version          = '0.2.2'
+  s.version          = '0.2.3'
   s.summary          = 'A small set of tools for deserializing JSON API objects.'
 
   s.description      = <<-DESC
@@ -18,5 +18,5 @@ Treasure is a small set of tools on top of Lyft's Mapper library to convert obje
   s.watchos.deployment_target = '2.0'
 
   s.source_files = 'Treasure/Classes/**/*'
-  s.dependency 'ModelMapper', '~> 9.0.0'
+  s.dependency 'ModelMapper', '~> 10.0.0'
 end

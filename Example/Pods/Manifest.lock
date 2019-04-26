@@ -1,7 +1,9 @@
 PODS:
-  - ModelMapper (9.0.0)
-  - Treasure (0.2.2):
-    - ModelMapper (~> 9.0.0)
+  - ModelMapper (10.0.0):
+    - ModelMapper/Core (= 10.0.0)
+  - ModelMapper/Core (10.0.0)
+  - Treasure (0.2.3):
+    - ModelMapper (~> 10.0.0)
 
 DEPENDENCIES:
   - Treasure (from `../`)
@@ -15,9 +17,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ModelMapper: d73910ce35d8dca0042bcea4cddc24050014e09a
-  Treasure: 0cc4e69e057aca804d2b8b8940284c85b02e250b
+  ModelMapper: a8dbf2a2003bf626627b9fe7c9a22b3405a30404
+  Treasure: 1a43eb89da7a86f6228c4a874731f6832378967b
 
 PODFILE CHECKSUM: 6bd0fb4d78752947dafe91beeb3f71dc5f170023
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.7.0.beta.3

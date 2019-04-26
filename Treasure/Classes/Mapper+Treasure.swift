@@ -21,26 +21,26 @@ public protocol TreasureMappable: Mappable {
 
 public extension Mappable {
     
-    public static func from(_ JSON: JSONObject) -> Self? {
+    static func from(_ JSON: JSONObject) -> Self? {
         return try? self.init(map: Mapper(JSON: JSON))
     }
 }
 
 public extension Mapper {
     
-    public init(JSON: JSONObject) {
+    init(JSON: JSONObject) {
         self.init(JSON: JSON as NSDictionary)
     }
     
     /// Maps a ToOneRelationship based on the mapping provided by implementing the Resource protocol
-    public func from<T: Resource>(_ relationship: ToOneRelationship?) throws -> T {
+    func from<T: Resource>(_ relationship: ToOneRelationship?) throws -> T {
         guard relationship?.data != nil else { throw MapperError.customError(field: Key.data, message: "Relationship data is nil") }
         
         return try Treasure.resourceFor(relationship: relationship!)
     }
     
     /// Maps a ToManyRelationship based on the mapping provided by implementing the Resource protocol
-    public func from<T: Resource>(_ relationship: ToManyRelationship?) throws -> [T] {
+    func from<T: Resource>(_ relationship: ToManyRelationship?) throws -> [T] {
         guard relationship?.data != nil else { throw MapperError.customError(field: Key.data, message: "Relationship data is nil") }
         
         return try Treasure.resourceFor(relationship: relationship!)

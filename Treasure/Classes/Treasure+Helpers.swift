@@ -44,7 +44,7 @@ extension Treasure {
                     continue
                 }
                 
-                if let index = typePool.index(where: { (typeData) -> Bool in
+                if let index = typePool.firstIndex(where: { (typeData) -> Bool in
                     if let lhs = typeData[Key.id] as? String, let rhs = data[Key.id] as? String {
                         return lhs == rhs
                     }

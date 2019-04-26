@@ -1,6 +1,6 @@
 {
   "name": "Treasure",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "summary": "A small set of tools for deserializing JSON API objects.",
   "description": "Treasure is a small set of tools on top of Lyft's Mapper library to convert objects according to the JSON API specification.",
   "homepage": "https://github.com/fishermenlabs/Treasure",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/fishermenlabs/Treasure.git",
-    "tag": "0.2.2"
+    "tag": "0.2.3"
   },
   "platforms": {
     "ios": "8.0",
@@ -24,7 +24,7 @@
   "source_files": "Treasure/Classes/**/*",
   "dependencies": {
     "ModelMapper": [
-      "~> 9.0.0"
+      "~> 10.0.0"
     ]
   }
 }
